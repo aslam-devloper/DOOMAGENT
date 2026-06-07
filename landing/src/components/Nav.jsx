@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { founder } from '../data/skills'
+import { downloads } from '../data/skills'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -13,8 +13,6 @@ export default function Nav() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  const remaining = Math.max(0, founder.cap - founder.claimed)
 
   return (
     <nav ref={ref} className={`nav ${scrolled ? 'scrolled' : ''}`}>
@@ -44,12 +42,17 @@ export default function Nav() {
             </svg>
             <span>@aslam.unfiltered</span>
           </a>
-          <a href="https://github.com/aslam-devloper/DOOMAGENT" className="nav-pill alt" data-cursor>GitHub</a>
-          <a href="#waitlist" data-open-waitlist data-premium-cta data-cursor className="nav-pill nav-pill-pro">
-            <span>Claim founder seat</span>
-            <span className="nav-pill-badge" aria-label={`${remaining} of ${founder.cap} founder seats remaining`}>
-              {remaining}/{founder.cap}
-            </span>
+          <a href={downloads.freeLibraryRepo} className="nav-pill alt" data-cursor>GitHub</a>
+          <a
+            href={downloads.omniscience}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-pill nav-pill-pro"
+            data-cursor
+            aria-label="Download OMNISCIENCE (free)"
+          >
+            <span>↓ Download OMNISCIENCE</span>
+            <span className="nav-pill-badge">free</span>
           </a>
         </div>
       </div>

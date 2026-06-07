@@ -1,11 +1,8 @@
-import { founder } from '../data/skills'
+import { downloads, shortenerNote } from '../data/skills'
 import Reveal from './Reveal'
 import Tilt from './Tilt'
 
 export default function Premium() {
-  const remaining = Math.max(0, founder.cap - founder.claimed)
-  const pct = Math.min(100, (founder.claimed / founder.cap) * 100)
-
   return (
     <section className="prem-v2" id="premium">
       <div className="wrap">
@@ -33,7 +30,7 @@ export default function Premium() {
               </div>
               <h3 className="card-h">The free library</h3>
               <p className="card-p">
-                20 cognitive skills. ~140kb total. Apache-2.0. No DRM. No telemetry.
+                20 cognitive skills. ~140kb total. Apache 2.0. No DRM. No telemetry.
                 Use one, use all, fork whatever you want. The library is the floor.
               </p>
               <ul className="card-list">
@@ -45,13 +42,15 @@ export default function Premium() {
                 <li>LUMEN, IRIS, ETHOS — design & guardrails</li>
               </ul>
               <div className="card-foot">
-                <a className="btn-v2 ghost" href="#library">See the 20 skills</a>
-                <span className="card-meta">$0 · forever · the floor</span>
+                <a className="btn-v2 green" href={downloads.freeLibrary} download data-cursor>
+                  ↓ Download .zip
+                </a>
+                <span className="card-meta">$0 · forever · no shortener</span>
               </div>
             </Tilt>
           </Reveal>
 
-          {/* RIGHT — OMNISCIENCE + founder license */}
+          {/* RIGHT — OMNISCIENCE, free via shortener */}
           <Reveal as="article" className="prem-card prem-pro" delay={120}>
             <Tilt>
               <div className="card-top">
@@ -64,47 +63,34 @@ export default function Premium() {
                 Drop it in your agent and the 20 free skills become a single, defensible voice.
               </p>
 
-              {/* FOUNDER COHORT BLOCK */}
-              <div className="founder-block">
-                <div className="founder-row">
-                  <span className="founder-label">FOUNDER COHORT</span>
-                  <span className="founder-remaining">
-                    <strong>{remaining}</strong> of {founder.cap} remaining
-                  </span>
-                </div>
-                <div className="founder-bar" role="progressbar"
-                     aria-valuemin="0" aria-valuemax={founder.cap}
-                     aria-valuenow={founder.claimed}>
-                  <div className="founder-bar-fill" style={{ width: pct + '%' }} />
-                </div>
-                <div className="founder-row sub">
-                  <span className="founder-meta">
-                    {founder.claimed} / {founder.cap} claimed
-                  </span>
-                  <span className="founder-meta">
-                    Closes {new Date(founder.closesOn).toUTCString().slice(0, 16)}
-                  </span>
-                </div>
+              <div className="pro-download">
+                <a
+                  className="btn-v2 pro pro-dl-btn"
+                  href={downloads.omniscience}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor
+                  aria-label="Download OMNISCIENCE (free, via shortener link)"
+                >
+                  <span className="pro-dl-glyph">↓</span>
+                  <span>Download OMNISCIENCE</span>
+                  <span className="pro-dl-tag">free</span>
+                </a>
+              </div>
 
-                <ul className="founder-benefits">
-                  {founder.benefits.map((b) => (
-                    <li key={b}><span className="check">✓</span>{b}</li>
-                  ))}
-                </ul>
-
-                <div className="founder-foot">
-                  <a className="btn-v2 pro" href="#waitlist" data-open-waitlist>
-                    Claim founder license
-                  </a>
-                  <span className="founder-fine">
-                    No subscription · pay once · keeps the work alive
-                  </span>
+              {/* SHORTENER NOTE — honest, no-warning framing */}
+              <div className="pro-note" role="note">
+                <div className="pro-note-head">
+                  <span className="pro-note-pill">{shortenerNote.title}</span>
                 </div>
+                {shortenerNote.body.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
               </div>
 
               <div className="pro-fineprint">
-                OMNISCIENCE is commercial-licensed. Founder cohort is the only way in.
-                When the cap is met, OMNISCIENCE stays closed until the next cohort.
+                OMNISCIENCE is free for everyone. The shortener pays a small amount per click
+                — that's the funding model. No email, no signup, no telemetry.
               </div>
             </Tilt>
           </Reveal>

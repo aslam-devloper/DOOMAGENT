@@ -2,7 +2,7 @@
 
 **The mind of a firm. The speed of one.**
 
-20 free cognitive skills for AI agents. **OMNISCIENCE** — the master skill — is the one that orchestrates all 20. Apache 2.0 for the free library. Built by ASLAM, useful not flashy.
+20 free cognitive skills for AI agents. **OMNISCIENCE** — the master skill — is the one that orchestrates all 20, and it's free for everyone. Apache 2.0 for the free library. Built by ASLAM, useful not flashy.
 
 ```
 $ git clone https://github.com/aslam-devloper/DOOMAGENT.git
@@ -15,11 +15,15 @@ Each skill is a small cognitive operating system — a structured way of thinkin
 
 ---
 
-## 🔥 OMNISCIENCE — The Master Skill
+## 🔥 OMNISCIENCE — Free for everyone
 
 > **20 lenses. One cascade. Zero blind spots.**
 
-The 20 free skills are **instruments**. OMNISCIENCE is the **conductor** — it contains all 20 as named **lenses**, picks the right ones for the task, runs an expert panel that argues with itself, and ships an answer an engineer would sign.
+OMNISCIENCE is the master skill — it contains all 20 free skills as named **lenses**, picks the right ones for the task, runs an expert panel that argues with itself, and ships an answer an engineer would sign.
+
+It's free. No email, no signup, no license key. Just download and drop it in.
+
+**→ [Download OMNISCIENCE](https://doomagent.vercel.app/#premium)** *(funding note: the download link is a URL shortener — it earns a small amount per click, which is how DOOMAGENT stays free for everyone. The shortener shows an interstitial page; that's the shortener, not malware.)*
 
 ```
 1. DECODE   → restate the true intent
@@ -67,22 +71,6 @@ LENSES: ✓ [passed] · ⚠ [flagged] · ✗ [failed]
 CONFIDENCE: X% — [one-line reason]
 FLIP VARIABLE: [what would change this answer]   ← for trade-off questions
 ```
-
-### Founder cohort — the only way to get OMNISCIENCE
-
-OMNISCIENCE ships in a **founder cohort**, capped at 500 seats. When the cap is met, OMNISCIENCE stays closed until the next round.
-
-**What you get:**
-
-- OMNISCIENCE — the master skill, lifetime updates
-- Founder license key (one person, one key, no DRM)
-- Direct line to ASLAM for feedback and bugs
-- Your name in the `FOUNDERS.md` credits
-- First look at every new skill before public release
-
-→ **[Claim a founder license at doomagent.vercel.app](https://doomagent.vercel.app)**
-
-The 20 free skills stay free forever. The founder cohort is what keeps the work alive.
 
 ### Auto-selected lens sets for common tasks
 
@@ -146,8 +134,6 @@ The skills are designed to be drop-in. Copy `AGENTDOOM/skills/<skill-name>/` int
 
 Each skill's `description` field in the frontmatter is the trigger. When the model sees matching keywords in the user's request, it loads the skill. No manual invocation needed.
 
-**Just want the master skill?** → [doomagent.vercel.app](https://doomagent.vercel.app) for OMNISCIENCE. Drop in one file, get all 20 lenses.
-
 ## What they actually do
 
 These aren't prompt packs. They're cognitive operating systems.
@@ -175,7 +161,7 @@ They're not opinion-free. ATLAS will tell you to use Postgres. AEGIS will refuse
 
 ## License
 
-Apache 2.0 for the 20 free skills. OMNISCIENCE is **Commercial** — license issued on https://doomagent.vercel.app. Use the free ones commercially. Modify them. Ship them in your own product. Just keep the credit.
+Apache 2.0 for the 20 free skills. OMNISCIENCE is **free for everyone** — distributed via the download shortener on the landing site. The shortener pays a small amount per click to fund the project. No email, no signup, no telemetry.
 
 ## Credits
 

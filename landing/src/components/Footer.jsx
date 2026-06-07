@@ -1,4 +1,4 @@
-import { founder } from '../data/skills'
+import { downloads } from '../data/skills'
 
 export default function Footer() {
   return (
@@ -31,17 +31,23 @@ export default function Footer() {
             · 20 cognitive lenses
           </div>
           <div className="foot-v2-funder">
-            <span className="dot-funder" aria-hidden /> Founder cohort ·{' '}
-            {founder.claimed}/{founder.cap} seats ·{' '}
-            <a href="#waitlist" data-open-waitlist data-cursor>
-              closes {new Date(founder.closesOn).toUTCString().slice(0, 16)}
-            </a>
+            <span className="dot-funder" aria-hidden /> OMNISCIENCE is free for everyone ·
+            funded by the download shortener
           </div>
         </div>
         <div className="foot-v2-links">
           <a href="https://github.com/aslam-devloper/DOOMAGENT" data-cursor>GitHub</a>
           <a href="https://razorpay.me/@mohammadibraheem" data-cursor>Donate</a>
-          <a href="#waitlist" data-open-waitlist data-cursor className="foot-cta">Claim founder seat</a>
+          <a
+            href={downloads.omniscience}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor
+            className="foot-cta"
+            aria-label="Download OMNISCIENCE (free)"
+          >
+            ↓ Download OMNISCIENCE
+          </a>
         </div>
       </div>
     </footer>

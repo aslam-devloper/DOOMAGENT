@@ -5,7 +5,7 @@ import FloatingChips from './FloatingChips'
 import Tilt from './Tilt'
 import Magnetic from './Magnetic'
 import Reveal from './Reveal'
-import { skills, founder, cascade } from '../data/skills.jsx'
+import { skills, downloads, cascade } from '../data/skills.jsx'
 
 const heroChips = skills
   .filter(s => s.flag === 'free')
@@ -33,8 +33,6 @@ export default function Hero() {
   const terminalY = useTransform(scrollYProgress, [0, 1], [0, 80])
   const terminalOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
-  const remaining = Math.max(0, founder.cap - founder.claimed)
-
   return (
     <section className="hero-v2" id="top" ref={ref}>
       <MeshGradient />
@@ -45,7 +43,7 @@ export default function Hero() {
             <Reveal as="div" delay={0} duration={0.6}>
               <div className="hero-v2-eyebrow">
                 <span className="pulse"></span>
-                FOUNDER COHORT · {founder.claimed} of {founder.cap} seats · closes {new Date(founder.closesOn).toUTCString().slice(0, 16)}
+                v3.0 · 20 free skills + OMNISCIENCE · Apache 2.0 · works on any agent
               </div>
             </Reveal>
 
@@ -70,13 +68,21 @@ export default function Hero() {
               is the <b>proof of craft</b>. <b style={{ color: 'var(--amber)' }}>OMNISCIENCE</b> is the
               work itself: a 9-step cascade that loads the right lenses, runs an expert panel
               that argues with itself, and ships an answer an engineer would sign.
-              Drop it into <b>any AI agent</b> — Claude Code, Cursor, Cline, Aider, opencode, LangChain.
+              <b style={{ color: 'var(--amber)' }}> OMNISCIENCE is free</b> — drop it into
+              <b> any AI agent</b>, Claude Code, Cursor, Cline, Aider, opencode, LangChain.
             </Reveal>
 
             <Reveal as="div" delay={0.8} y={20} duration={0.6} className="hero-v2-ctas">
               <Magnetic strength={0.25} as="div">
-                <a href="#waitlist" className="btn amber" data-open-waitlist data-cursor>
-                  Claim founder license <span className="arrow">→</span>
+                <a
+                  href={downloads.omniscience}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn amber"
+                  data-cursor
+                  aria-label="Download OMNISCIENCE (free, via shortener link)"
+                >
+                  Download OMNISCIENCE <span className="arrow">→</span>
                 </a>
               </Magnetic>
               <Magnetic strength={0.2} as="div">
@@ -85,16 +91,15 @@ export default function Hero() {
                 </a>
               </Magnetic>
               <Magnetic strength={0.25} as="div">
-                <a href="https://github.com/aslam-devloper/DOOMAGENT" className="btn" data-cursor>
+                <a href={downloads.freeLibrary} download className="btn" data-cursor>
                   Get the free library
                 </a>
               </Magnetic>
             </Reveal>
 
             <Reveal as="div" delay={1.0} y={20} duration={0.6} className="hero-v2-meta">
-              <span><b>{founder.claimed}</b> / {founder.cap} founder seats</span>
-              <span><b>9</b> cascade steps</span>
-              <span><b>20</b> free lenses</span>
+              <span><b>20</b> free skills · Apache 2.0</span>
+              <span><b>1</b> master skill · OMNISCIENCE</span>
               <span><b>0</b> dependencies</span>
               <span><b>any</b> AI agent</span>
               <a

@@ -18,7 +18,6 @@ import Cascade from './components/Cascade'
 import Fineprint from './components/Fineprint'
 import Buy from './components/Buy'
 import Footer from './components/Footer'
-import WaitlistModal from './components/WaitlistModal'
 
 export default function App() {
   const lenisRef = useRef(null)
@@ -55,23 +54,6 @@ export default function App() {
   const { scrollYProgress } = useScroll()
   const progressX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
 
-  // Open founder-cohort modal from any premium / open-waitlist / premium-cta trigger.
-  // Also fires a small confetti burst at the trigger position.
-  useEffect(() => {
-    function onClick(e) {
-      const target = e.target.closest('[data-premium-cta], [data-open-waitlist]')
-      if (!target) return
-      e.preventDefault()
-      window.dispatchEvent(new CustomEvent('open-waitlist'))
-      const rect = target.getBoundingClientRect()
-      window.dispatchEvent(new CustomEvent('dm:confetti', {
-        detail: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-      }))
-    }
-    document.addEventListener('click', onClick)
-    return () => document.removeEventListener('click', onClick)
-  }, [])
-
   return (
     <>
       <a className="skip-link" href="#main" data-cursor>Skip to content</a>
@@ -94,7 +76,6 @@ export default function App() {
         <Buy />
       </main>
       <Footer />
-      <WaitlistModal />
     </>
   )
 }

@@ -1,21 +1,22 @@
 // All 21 DOOMAGENT skills, structured for the library landing page.
 
-// --- FOUNDER LICENSE CONFIG (the only thing that costs) ---
-// Edit these values as the founder cohort grows.
-export const founder = {
-  cap: 500,
-  claimed: 247,                 // update with real number from the waitlist
-  closesOn: '2026-07-31T23:59:59Z', // ISO; countdown reads from this
-  benefits: [
-    'OMNISCIENCE — the master skill, lifetime updates',
-    'Founder license key (one person, one key, no DRM)',
-    'Direct line to ASLAM for feedback and bugs',
-    'Your name in the FOUNDERS.md credits',
-    'First look at every new skill before public release',
-  ],
-  standardBenefits: [
-    'OMNISCIENCE — the master skill, lifetime updates',
-    'Single license key, single user, no telemetry',
+// --- DOWNLOAD LINKS (the only thing that matters for distribution) ---
+// The 20 free skills live on GitHub. OMNISCIENCE is hosted at the shortener
+// link below — that's how the project gets funded (the shortener pays a
+// small amount per click). Edit the URL if the host changes.
+export const downloads = {
+  freeLibrary: 'https://github.com/aslam-devloper/DOOMAGENT/archive/refs/heads/main.zip',
+  freeLibraryRepo: 'https://github.com/aslam-devloper/DOOMAGENT',
+  omniscience: 'https://shrinkme.click/ppABk',
+}
+
+// --- SHORTENER NOTE (shown next to the OMNISCIENCE download) ---
+// Honest, no-warning framing. The shortener is the project's funding model.
+export const shortenerNote = {
+  title: 'Note: shortener link',
+  body: [
+    'The OMNISCIENCE download is a URL shortener. It opens an interstitial page first — that is the shortener, not malware. The site earns a small amount per click, and that is how DOOMAGENT stays free for everyone.',
+    'No accounts, no email, no signup. The other 20 free skills are on GitHub with no shortener.',
   ],
 }
 

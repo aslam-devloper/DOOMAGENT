@@ -1,6 +1,6 @@
 # DOOMAGENT — Landing
 
-The marketing site for [DOOMAGENT](https://github.com/aslam-devloper/DOOMAGENT) — 20 free cognitive skills for AI agents + **OMNISCIENCE**, the master skill that orchestrates all 20.
+The marketing site for [DOOMAGENT](https://github.com/aslam-devloper/DOOMAGENT) — 20 free cognitive skills for AI agents + **OMNISCIENCE**, the master skill that orchestrates all 20 (also free).
 
 Live at **[doomagent.vercel.app](https://doomagent.vercel.app)**.
 
@@ -8,7 +8,7 @@ Live at **[doomagent.vercel.app](https://doomagent.vercel.app)**.
 
 ## What this is
 
-A Vite + React 18 single-page app. Pure frontend, no backend. The founder-cohort waitlist modal generates license keys client-side via a DJB2 hash + base36 timestamp — the actual license file is delivered by email.
+A Vite + React 18 single-page app. Pure frontend, no backend.
 
 ### Design system
 - Dark brutalist terminal aesthetic
@@ -17,7 +17,7 @@ A Vite + React 18 single-page app. Pure frontend, no backend. The founder-cohort
 - Lenis smooth scroll · framer-motion · custom cursor · magnetic buttons · 3D tilt · scroll progress bar
 
 ### Sections (in order)
-1. **Nav** — sticky; founder-cohort badge with remaining seats
+1. **Nav** — sticky; "Download OMNISCIENCE" pill
 2. **Hero** — OMNISCIENCE-first headline; terminal preview of the cascade
 3. **Marquee** — skill ticker
 4. **Problem** — why generic agents fail
@@ -25,38 +25,38 @@ A Vite + React 18 single-page app. Pure frontend, no backend. The founder-cohort
 6. **Showcase** — before/after of METIS, ATLAS, PHRONESIS
 7. **Install** — copy-paste install commands
 8. **Stack** — dependency-free pitch
-9. **Stats** — 5 honest numbers (incl. founder seat counter)
-10. **Premium** — free library vs OMNISCIENCE (founder-license CTA)
+9. **Stats** — 4 honest numbers
+10. **Premium** — free library vs OMNISCIENCE (free download CTA + shortener note)
 11. **Cascade** — the 9 steps + expert panel + auto-selected lens sets (the value proof)
 12. **Fineprint** — honest disclosures
-13. **Buy** — masterwork CTA + founder pill
-14. **Footer** — credits + founder cohort closing date
-15. **WaitlistModal** — the founder cohort flow (email → license key)
+13. **Buy** — masterwork CTA + free download
+14. **Footer** — credits + OMNISCIENCE free note
 
-## Founder cohort config
+## Download links config
 
-All founder-cohort numbers live in **one place**: `src/data/skills.jsx` → the `founder` object.
+All download URLs live in **one place**: `src/data/skills.jsx` → the `downloads` object.
 
 ```js
-export const founder = {
-  cap: 500,
-  claimed: 247,                  // ← update with real number
-  closesOn: '2026-08-31T23:59:59Z',  // ← update with real date
-  benefits: [
-    'OMNISCIENCE — the master skill, lifetime updates',
-    'Founder license key (one person, one key, no DRM)',
-    'Direct line to ASLAM for feedback and bugs',
-    'Your name in the FOUNDERS.md credits',
-    'First look at every new skill before public release',
-  ],
-  standardBenefits: [
-    'OMNISCIENCE — the master skill, lifetime updates',
-    'Single license key, single user, no telemetry',
-  ],
+export const downloads = {
+  freeLibrary: 'https://github.com/aslam-devloper/DOOMAGENT/archive/refs/heads/main.zip',
+  freeLibraryRepo: 'https://github.com/aslam-devloper/DOOMAGENT',
+  omniscience: 'https://shrinkme.click/ppABk',  // ← funded by the shortener
 }
 ```
 
-Changing `claimed` and `closesOn` here updates the founder counter everywhere (Nav, Hero eyebrow, Stats card, Premium block, Cascade section, Buy section, Footer, WaitlistModal).
+Changing the OMNISCIENCE URL here updates it everywhere (Nav, Hero, Premium, Buy, Footer).
+
+The shortener note is also centralized:
+
+```js
+export const shortenerNote = {
+  title: 'Note: shortener link',
+  body: [
+    'The OMNISCIENCE download is a URL shortener. ...',
+    'No accounts, no email, no signup. The other 20 free skills are on GitHub with no shortener.',
+  ],
+}
+```
 
 ## Development
 
@@ -74,20 +74,19 @@ Vercel. `pnpm build` → `dist/`. `vercel.json` rewrites all routes to `/index.h
 
 ```
 src/
-├── App.jsx                 # section order, smooth scroll, modal trigger
+├── App.jsx                 # section order, smooth scroll
 ├── main.jsx
 ├── data/
-│   └── skills.jsx          # ← founder config + skills + cascade + lens sets
+│   └── skills.jsx          # ← downloads + skills + cascade + lens sets + shortener note
 ├── components/
-│   ├── Hero.jsx            # OMNISCIENCE-first headline
+│   ├── Hero.jsx            # OMNISCIENCE-first headline + free download CTAs
 │   ├── Library.jsx         # 21 skills + Download .zip bar
-│   ├── Stats.jsx           # 5 honest numbers + founder counter
-│   ├── Premium.jsx         # free vs OMNISCIENCE
+│   ├── Stats.jsx           # 4 honest numbers
+│   ├── Premium.jsx         # free library vs OMNISCIENCE (free + shortener note)
 │   ├── Cascade.jsx         # 9-step cascade + expert panel + lens sets
-│   ├── Buy.jsx             # masterwork CTA
-│   ├── Footer.jsx          # credits + founder closing date
-│   ├── Nav.jsx             # founder pill with seat counter
-│   ├── WaitlistModal.jsx   # founder cohort flow
+│   ├── Buy.jsx             # masterwork CTA + free download
+│   ├── Footer.jsx          # credits + OMNISCIENCE-free note
+│   ├── Nav.jsx             # download pill in nav
 │   ├── Reveal.jsx          # scroll-reveal wrapper
 │   ├── Tilt.jsx            # 3D tilt
 │   ├── Magnetic.jsx        # magnetic button
@@ -107,11 +106,11 @@ src/
 
 ## Design philosophy
 
-- **OMNISCIENCE is the product.** The free library is the proof of craft, not the headline.
-- **Honest FOMO, not dark patterns.** Real cap, real deadline, real benefits. No fake countdowns. No "X viewing now."
+- **OMNISCIENCE is the masterwork.** The free library is the proof of craft, not the headline.
+- **Everything is free.** 20 free skills (Apache 2.0) + OMNISCIENCE (free, funded by the shortener).
+- **The shortener is the funding model.** The note in the Premium block explains it in plain language. No "warning" framing — just honest disclosure.
 - **The cascade is the value proof.** Don't tell people OMNISCIENCE is good — show them the 9 steps, the expert panel, the auto-selected lens sets.
-- **Founder cohort is the gate.** One cohort at a time. When it's full, OMNISCIENCE waits. The discipline is the value.
 
 ## License
 
-The site itself is MIT. The free library it links to is Apache 2.0. OMNISCIENCE is Commercial — license issued on https://doomagent.vercel.app.
+The site itself is MIT. The free library it links to is Apache 2.0. OMNISCIENCE is free for everyone — distributed via the download shortener at https://doomagent.vercel.app.
