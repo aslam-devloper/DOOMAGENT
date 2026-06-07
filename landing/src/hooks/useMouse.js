@@ -1,48 +1,69 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
 
 /**
- * Track the global mouse position with a smoothed, laggy value.
- * Returns raw (instant) and smoothed (eased) coordinates plus a normalized
- * -1..1 vector relative to the viewport center.
+ * High-performance global mouse tracker.
  *
- * The smoothed value is updated via rAF for buttery motion.
+ * Why this exists: an earlier version called setState in rAF, which caused
+ * every consumer to re-render every frame. That was the main source of
+ * input lag on the site. This version uses a ref + window event + a tiny
+ * pub/sub. Components that need raw coordinates read from `getMouse()` in
+ * their own animation loops. Components that need React-driven re-renders
+ * (rare) use `useMousePos()` which uses useSyncExternalStore — still cheap,
+ * but only notifies subscribers on actual change.
+ */
+
+const listeners = new Set()
+const pos = { x: 0, y: 0, nx: 0, ny: 0 }
+let attached = false
+let rafScheduled = false
+
+function onMove(e) {
+  pos.x = e.clientX
+  pos.y = e.clientY
+  if (!rafScheduled) {
+    rafScheduled = true
+    requestAnimationFrame(flush)
+  }
+}
+
+function flush() {
+  rafScheduled = false
+  const w = window.innerWidth || 1
+  const h = window.innerHeight || 1
+  pos.nx = (pos.x - w / 2) / (w / 2)
+  pos.ny = (pos.y - h / 2) / (h / 2)
+  listeners.forEach(fn => fn())
+}
+
+function attach() {
+  if (attached || typeof window === 'undefined') return
+  window.addEventListener('mousemove', onMove, { passive: true })
+  window.addEventListener('mouseleave', () => { pos.x = -9999; pos.y = -9999; listeners.forEach(fn => fn()) }, { passive: true })
+  attached = true
+}
+
+function subscribe(fn) {
+  attach()
+  listeners.add(fn)
+  return () => listeners.delete(fn)
+}
+
+const serverSnapshot = { x: 0, y: 0, nx: 0, ny: 0 }
+function getSnapshot() { return pos }
+function getServerSnapshot() { return serverSnapshot }
+
+/**
+ * Returns a stable ref-like object containing the current mouse position.
+ * Reads from a shared ref, NO React re-render. Use inside rAF/animation
+ * loops where you can poll .current.x freely.
+ */
+export function getMouse() { return pos }
+
+/**
+ * Subscribes the calling component to mouse position changes. Re-renders
+ * only when the mouse actually moves (useSyncExternalStore, throttled by
+ * the rAF in flush). For heavy components prefer `getMouse()` + manual rAF.
  */
 export default function useMouse() {
-  const [pos, setPos] = useState({ x: 0, y: 0, nx: 0, ny: 0 })
-  const target = useRef({ x: 0, y: 0 })
-  const smooth = useRef({ x: 0, y: 0 })
-  const raf = useRef(0)
-
-  useEffect(() => {
-    function onMove(e) {
-      target.current.x = e.clientX
-      target.current.y = e.clientY
-    }
-    window.addEventListener('mousemove', onMove, { passive: true })
-
-    function tick() {
-      const k = 0.14
-      smooth.current.x += (target.current.x - smooth.current.x) * k
-      smooth.current.y += (target.current.y - smooth.current.y) * k
-      const w = window.innerWidth || 1
-      const h = window.innerHeight || 1
-      const cx = w / 2
-      const cy = h / 2
-      setPos({
-        x: target.current.x,
-        y: target.current.y,
-        nx: (target.current.x - cx) / cx,
-        ny: (target.current.y - cy) / cy,
-      })
-      raf.current = requestAnimationFrame(tick)
-    }
-    raf.current = requestAnimationFrame(tick)
-
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      cancelAnimationFrame(raf.current)
-    }
-  }, [])
-
-  return pos
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }

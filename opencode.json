@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "skills": {
-    "paths": ["AGENTDOOM/skills"]
+    "paths": ["AGENTDOOM/skills", "AGENTDOOM/premium"]
   }
 }

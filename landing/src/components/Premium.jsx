@@ -70,7 +70,7 @@ export default function Premium() {
             <div className="r">
               <Magnetic strength={0.25} as="div">
                 <a
-                  href="https://aslam-devloper.gumroad.com/l/omniscience"
+                  href="#buy"
                   className="btn amber"
                   data-premium-cta
                   data-cursor

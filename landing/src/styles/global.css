@@ -1032,29 +1032,22 @@ footer {
 .mesh-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(40px);
   will-change: transform;
-  opacity: 0.55;
+  opacity: 0.45;
   mix-blend-mode: screen;
 }
 .mesh-blob.a1 {
   width: 520px; height: 520px;
   top: -120px; left: -100px;
   background: radial-gradient(circle, var(--cyan) 0%, transparent 70%);
-  animation: meshDrift1 18s ease-in-out infinite;
+  animation: meshDrift1 20s ease-in-out infinite;
 }
 .mesh-blob.a2 {
   width: 620px; height: 620px;
   top: 30%; right: -180px;
   background: radial-gradient(circle, var(--violet) 0%, transparent 70%);
-  animation: meshDrift2 22s ease-in-out infinite;
-}
-.mesh-blob.a3 {
-  width: 480px; height: 480px;
-  bottom: -120px; left: 20%;
-  background: radial-gradient(circle, var(--magenta) 0%, transparent 70%);
-  opacity: 0.4;
-  animation: meshDrift3 25s ease-in-out infinite;
+  animation: meshDrift2 24s ease-in-out infinite;
 }
 @keyframes meshDrift1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -1104,6 +1097,12 @@ footer {
   cursor: none;
   will-change: transform, opacity;
   transition: color .2s, border-color .2s, background .2s;
+  animation: fcFloat var(--fc-dur, 14s) ease-in-out var(--fc-delay, 0s) infinite;
+}
+@keyframes fcFloat {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0.35; }
+  50%  { transform: translate3d(var(--fc-dx, 10px), var(--fc-dy, -8px), 0); opacity: 0.7; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0.35; }
 }
 .fc:hover {
   color: var(--cyan);
@@ -1809,11 +1808,345 @@ footer {
 }
 
 /* ========================================================================
+   OMNISCIENCE DESIGN PASS — curves, no boxes, glass surfaces
+   ======================================================================== */
+
+:root {
+  /* Radius scale (IRIS primitive → semantic) */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-xl: 40px;
+  --r-pill: 999px;
+
+  /* Glass surface tokens */
+  --glass-1: rgba(20, 20, 22, 0.55);
+  --glass-2: rgba(14, 14, 16, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hi: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(18px) saturate(140%);
+  --glass-blur-strong: blur(28px) saturate(160%);
+}
+
+/* ---- Soft global surface ------------------------------------------- */
+
+section {
+  position: relative;
+  padding: 140px 0;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+section + section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--edge-2), transparent);
+}
+section:first-of-type { border-top: 0 !important; }
+
+/* ---- Pill buttons --------------------------------------------------- */
+
+.btn {
+  border-radius: var(--r-pill) !important;
+  padding: 16px 26px !important;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  transition: transform .2s cubic-bezier(.2,.7,.1,1), background .2s, box-shadow .25s, color .2s, border-color .2s;
+  box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.6);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.7); }
+.btn.ghost {
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-color: var(--glass-border) !important;
+  color: var(--bone) !important;
+}
+.btn.ghost:hover { background: var(--glass-2) !important; border-color: var(--glass-border-hi) !important; }
+.btn.green { box-shadow: 0 8px 24px -8px rgba(57, 255, 20, 0.4); }
+.btn.green:hover { box-shadow: 0 14px 32px -10px rgba(57, 255, 20, 0.6); }
+.btn.amber { box-shadow: 0 8px 24px -8px rgba(255, 214, 10, 0.4); }
+.btn.amber:hover { box-shadow: 0 14px 32px -10px rgba(255, 214, 10, 0.6); }
+.btn.cyan { box-shadow: 0 8px 24px -8px rgba(0, 229, 255, 0.4); }
+.btn.cyan:hover { box-shadow: 0 14px 32px -10px rgba(0, 229, 255, 0.6); }
+
+/* ---- Glass nav ------------------------------------------------------ */
+
+.nav {
+  background: rgba(8, 8, 9, 0.75) !important;
+  border-bottom: 0 !important;
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  padding: 14px 0;
+}
+.nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 90%; max-width: 1100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border-hi), transparent);
+  pointer-events: none;
+}
+.nav.scrolled { background: rgba(8, 8, 9, 0.88) !important; }
+.nav-pill { border-radius: var(--r-pill) !important; padding: 8px 16px !important; }
+.nav-ig { border-radius: var(--r-pill) !important; }
+.nav-pill.alt {
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+/* ---- Glass hero ----------------------------------------------------- */
+
+.hero-v2 {
+  background: radial-gradient(ellipse 80% 50% at 50% 30%, rgba(0, 229, 255, 0.06), transparent 60%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(179, 136, 255, 0.04), transparent 60%);
+}
+.hero-v2 h1 .line {
+  border-radius: var(--r-sm);
+}
+.hero-terminal {
+  border-radius: var(--r-lg) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.hero-terminal-bar { border-radius: var(--r-lg) var(--r-lg) 0 0 !important; }
+
+/* ---- Problem cards (rounded) ---------------------------------------- */
+
+.prob-v2-card {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.prob-v2-card:hover {
+  border-color: var(--glass-border-hi) !important;
+  background: var(--glass-2) !important;
+}
+
+/* ---- Library cards (rounded) ---------------------------------------- */
+
+.lib-v2-card {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+  min-height: 210px;
+}
+.lib-v2-card:hover {
+  border-color: rgba(0, 229, 255, 0.4) !important;
+  background: var(--glass-2) !important;
+}
+.lib-v2-card.is-pro {
+  border-color: rgba(255, 214, 10, 0.2) !important;
+  background: linear-gradient(180deg, rgba(255, 214, 10, 0.06), rgba(20, 20, 22, 0.55)) !important;
+}
+.lib-v2-card.is-pro:hover { border-color: rgba(255, 214, 10, 0.5) !important; }
+
+.lib-v2-pill {
+  border-radius: var(--r-pill) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.lib-v2-pill.active {
+  background: var(--cyan) !important;
+  border-color: var(--cyan) !important;
+  color: var(--void) !important;
+  box-shadow: 0 8px 20px -8px rgba(0, 229, 255, 0.5);
+}
+
+/* ---- Showcase (rounded cards, curved flow) -------------------------- */
+
+.show-v2-card {
+  border-radius: var(--r-lg) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.show-v2-panel {
+  border-radius: var(--r-md) !important;
+  background: var(--void-3) !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ---- Install (rounded terminal) ------------------------------------ */
+
+.inst-v2-block {
+  border-radius: var(--r-lg) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.inst-v2-bar { border-radius: var(--r-lg) var(--r-lg) 0 0 !important; }
+.inst-v2-step {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ---- Stack (rounded pills) ------------------------------------------ */
+
+.stk-v2-frame {
+  border-radius: var(--r-lg) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.stk-v2-pill {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.stk-v2-pill.is-cyan { background: rgba(0, 229, 255, 0.06) !important; }
+.stk-v2-pill.is-amber { background: rgba(255, 214, 10, 0.06) !important; }
+
+/* ---- Stats (rounded number cards) ----------------------------------- */
+
+.stat-v2-card {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.stat-v2-card:hover { border-color: rgba(0, 229, 255, 0.4) !important; }
+.stat-v2-quote {
+  border-left: 0 !important;
+  padding: 24px 28px !important;
+  background: var(--glass-1);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  font-style: italic;
+  position: relative;
+  margin: 56px 0 0;
+}
+.stat-v2-quote::before {
+  content: '"';
+  position: absolute;
+  top: -10px; left: 16px;
+  font-size: 80px;
+  line-height: 1;
+  color: var(--cyan);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.stat-v2-quote cite { display: block; margin-top: 12px; }
+
+/* ---- Premium (rounded lens cards) ---------------------------------- */
+
+.prem-v2-lens {
+  border-radius: var(--r-md) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+.prem-v2-lens:hover { border-color: rgba(255, 214, 10, 0.4) !important; }
+.prem-v2-foot {
+  border-radius: var(--r-lg) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ---- Marquee (soft edges) ------------------------------------------- */
+
+.marquee {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  background: transparent !important;
+  position: relative;
+}
+.marquee::before,
+.marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--void), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--void), transparent); }
+
+/* ---- Buy (rounded dramatic) ---------------------------------------- */
+
+.buy-v2 { border-radius: 0; }
+.buy-v2-title {
+  letter-spacing: -0.06em;
+}
+
+/* ---- Fineprint (rounded) -------------------------------------------- */
+
+.fp {
+  border-top: 0 !important;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+.fp:last-child { border-bottom: 0 !important; }
+
+/* ---- Floating chips (rounded) -------------------------------------- */
+
+.fc {
+  border-radius: var(--r-pill) !important;
+  background: var(--glass-1) !important;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ---- Footer (rounded edges) ---------------------------------------- */
+
+footer {
+  border-top: 0 !important;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.4));
+  border-radius: 0;
+}
+
+/* ---- Modal (rounded) ------------------------------------------------ */
+
+.modal {
+  border-radius: var(--r-lg) !important;
+  background: var(--glass-2) !important;
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  border: 1px solid var(--glass-border) !important;
+}
+.modal-form input {
+  border-radius: var(--r-pill) !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--void) !important;
+}
+.modal-form button { border-radius: var(--r-pill) !important; }
+
+/* ========================================================================
    OMNISCIENCE AUDIT — final pass
    Problem / Stack / Stats / Buy / Marquee / Nav / Footer / a11y
    ======================================================================== */
-
-/* ---- Design tokens (IRIS-style: primitive + semantic) -------------- */
 
 :root {
   /* Primitive scale (do not use directly in components) */
