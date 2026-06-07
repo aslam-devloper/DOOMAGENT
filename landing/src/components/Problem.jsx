@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import Tilt from './Tilt'
+import Reveal from './Reveal'
 
 const items = [
   { t: '"Both are great options!"', d: 'when you needed a recommendation' },
@@ -9,25 +11,11 @@ const items = [
   { t: 'Re-derives the same answer 4 ways', d: 'because the structure isn\'t there' },
 ]
 
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
-}
-const card = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-}
-
 export default function Problem() {
   return (
-    <section>
+    <section className="prob-v2">
       <div className="wrap">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <Reveal as="div">
           <div className="eyebrow-sm">// 01 — the problem</div>
           <h2>Generic AI is <span className="ink">generic</span>.</h2>
           <p className="lead">
@@ -36,22 +24,18 @@ export default function Problem() {
           <p>
             What you're missing isn't intelligence. It's <em style={{ color: 'var(--bone)' }}>discipline</em> — the specific, opinionated, load-bearing kind that an expert applies without thinking. Skills are that discipline, codified.
           </p>
-        </motion.div>
-        <motion.div
-          className="bad-grid"
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-60px' }}
-        >
+        </Reveal>
+
+        <div className="prob-v2-grid">
           {items.map((it, i) => (
-            <motion.div key={i} variants={card}>
-              <div className="x">×</div>
-              <div className="t">{it.t}</div>
-              <div className="d">{it.d}</div>
-            </motion.div>
+            <Tilt key={i} maxTilt={5} scale={1.02} className="prob-v2-card">
+              <div className="prob-v2-x">×</div>
+              <div className="prob-v2-t">{it.t}</div>
+              <div className="prob-v2-d">{it.d}</div>
+              <div className="prob-v2-num">{String(i + 1).padStart(2, '0')}</div>
+            </Tilt>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

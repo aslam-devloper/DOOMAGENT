@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
+import Reveal from './Reveal'
+import Tilt from './Tilt'
 
-function Counter({ target, suffix = '', prefix = '' }) {
+function Counter({ target, suffix = '', prefix = '', duration = 1.6 }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const mv = useMotionValue(0)
@@ -15,12 +17,9 @@ function Counter({ target, suffix = '', prefix = '' }) {
 
   useEffect(() => {
     if (!inView) return
-    const controls = animate(mv, target, {
-      duration: 1.6,
-      ease: [0.16, 1, 0.3, 1],
-    })
+    const controls = animate(mv, target, { duration, ease: [0.16, 1, 0.3, 1] })
     return controls.stop
-  }, [inView, target, mv])
+  }, [inView, target, mv, duration])
 
   return (
     <span ref={ref} className="counter">
@@ -29,54 +28,46 @@ function Counter({ target, suffix = '', prefix = '' }) {
   )
 }
 
+const items = [
+  { target: 21, suffix: '', label: 'skills in library', note: '// 20 free · 1 premium' },
+  { target: 6, suffix: '', label: 'domains covered', note: '// reasoning, architecture, agents, code, ops, design' },
+  { target: 140, suffix: 'kb', label: 'total library size', note: '// smaller than one npm package' },
+  { target: 0, suffix: '', label: 'dependencies', note: '// it\'s markdown. that\'s the stack.' },
+]
+
 export default function Stats() {
   return (
-    <section>
+    <section className="stat-v2">
       <div className="wrap">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <Reveal as="div">
           <div className="eyebrow-sm">// 06 — honest numbers</div>
           <h2>Not magic. <span className="ink">Discipline.</span></h2>
           <p className="lead">
             Skills don't add knowledge. They add the scaffolding an expert applies without thinking. The result is measurable — on 7B local models and on the frontier ones.
           </p>
-        </motion.div>
-        <div className="stats">
-          <div className="stat">
-            <div className="big"><Counter target={21} /></div>
-            <div className="lbl">skills in library</div>
-            <div className="note">// 20 free · 1 premium</div>
-          </div>
-          <div className="stat">
-            <div className="big"><Counter target={6} /></div>
-            <div className="lbl">domains covered</div>
-            <div className="note">// reasoning, architecture, agents, code, ops, design</div>
-          </div>
-          <div className="stat">
-            <div className="big">~<Counter target={140} /><span className="u">kb</span></div>
-            <div className="lbl">total library size</div>
-            <div className="note">// smaller than one npm package</div>
-          </div>
-          <div className="stat">
-            <div className="big"><Counter target={0} /></div>
-            <div className="lbl">dependencies</div>
-            <div className="note">// it's markdown. that's the stack.</div>
-          </div>
+        </Reveal>
+
+        <div className="stat-v2-grid">
+          {items.map((it, i) => (
+            <Tilt key={i} maxTilt={3} scale={1.01} className="stat-v2-card">
+              <div className="stat-v2-big">
+                {it.target === 0 ? '0' : null}
+                {it.target !== 0 && <Counter target={it.target} suffix={it.suffix} />}
+                {it.target === 0 && <span className="stat-v2-suffix">kb</span>}
+              </div>
+              <div className="stat-v2-lbl">{it.label}</div>
+              <div className="stat-v2-note">{it.note}</div>
+              <div className="stat-v2-num">/0{i + 1}</div>
+            </Tilt>
+          ))}
         </div>
-        <motion.div
-          className="quote"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <blockquote>"The difference is not subtle. It's a different engineer on the other end of the prompt."</blockquote>
-          <div className="who">— ASLAM, builder of DOOMAGENT</div>
-        </motion.div>
+
+        <Reveal as="div" delay={0.1}>
+          <blockquote className="stat-v2-quote">
+            "The difference is not subtle. It's a different engineer on the other end of the prompt."
+            <cite>— ASLAM, builder of DOOMAGENT</cite>
+          </blockquote>
+        </Reveal>
       </div>
     </section>
   )

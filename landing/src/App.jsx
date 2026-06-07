@@ -73,11 +73,12 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#main" data-cursor>Skip to content</a>
       <Cursor />
       <SectionIndicator />
       <motion.div className="progress" style={{ scaleX: progressX, transformOrigin: '0% 50%' }} />
       <Nav />
-      <main>
+      <main id="main">
         <Hero />
         <Marquee />
         <Problem />
