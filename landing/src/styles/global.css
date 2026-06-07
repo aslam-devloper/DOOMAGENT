@@ -45,10 +45,8 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
+  /* keep system cursor visible — custom ring is decorative only */
 }
-
-@media (max-width: 900px) { body { cursor: auto; } }
 
 ::selection { background: var(--cyan); color: var(--void); }
 
@@ -60,51 +58,105 @@ img, svg { display: block; max-width: 100%; }
 code, pre, .mono { font-family: 'JetBrains Mono', "SF Mono", "Monaco", "Consolas", monospace; }
 
 /* ========================================================================
-   Cursor + Mark
+   Subtle background grid (texture, not noise)
    ======================================================================== */
 
-.cursor {
+body::before {
+  content: '';
   position: fixed;
-  top: 0; left: 0;
-  width: 14px; height: 14px;
-  border: 1.5px solid var(--cyan);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
   pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
-  transition: width .15s ease, height .15s ease, background .15s ease, border-color .15s ease, opacity .2s ease;
-  will-change: transform;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.025) 1px, transparent 0);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
 }
-.cursor.hover {
-  width: 38px; height: 38px;
-  background: var(--cyan);
-  border-color: var(--cyan);
-  mix-blend-mode: normal;
-}
-@media (max-width: 900px) { .cursor { display: none; } }
 
-.mark {
+main, nav, footer, .progress, .cursor-ring, .cursor-dot, .section-indicator {
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================================================
+   Custom cursor (decorative ring + dot; system cursor stays visible)
+   ======================================================================== */
+
+.cursor-ring,
+.cursor-dot {
   position: fixed;
   top: 0; left: 0;
-  width: 24px; height: 24px;
-  background: var(--cyan);
+  pointer-events: none;
   z-index: 9999;
-  pointer-events: none;
-  will-change: transform;
-  box-shadow: 0 0 24px rgba(0, 229, 255, 0.4);
-}
-.trail {
-  position: fixed;
-  width: 8px; height: 8px;
-  background: var(--cyan);
-  pointer-events: none;
-  z-index: 9998;
-  border-radius: 0;
+  border-radius: 50%;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
   will-change: transform, opacity;
 }
-@media (prefers-reduced-motion: reduce) {
-  .mark, .trail { display: none; }
+.cursor-ring {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--cyan);
+  background: transparent;
+  transition: width .2s ease, height .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+}
+.cursor-dot {
+  width: 5px; height: 5px;
+  background: var(--cyan);
+  transition: opacity .2s ease;
+}
+.cursor-ring.hover {
+  width: 44px; height: 44px;
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--cyan);
+}
+
+@media (max-width: 900px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-ring, .cursor-dot { display: none; }
+}
+
+/* ========================================================================
+   Section indicator (right edge)
+   ======================================================================== */
+
+.section-indicator {
+  position: fixed;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 150;
+  font-family: 'JetBrains Mono', monospace;
+}
+.si-rail {
+  position: relative;
+  width: 1px;
+  height: 80px;
+  background: var(--edge-2);
+  overflow: hidden;
+}
+.si-fill {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  background: var(--cyan);
+  height: 0;
+}
+.si-info {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: right;
+  min-width: 72px;
+  line-height: 1.4;
+}
+.si-num { color: var(--cyan); font-weight: 700; }
+.si-name { color: var(--muted-2); margin-top: 2px; }
+
+@media (max-width: 900px) {
+  .section-indicator { display: none; }
 }
 
 /* ========================================================================

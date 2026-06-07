@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'framer-motion'
 
 import Nav from './components/Nav'
 import Cursor from './components/Cursor'
-import BouncingMark from './components/BouncingMark'
-import Loader from './components/Loader'
+import SectionIndicator from './components/SectionIndicator'
 import Hero from './components/Hero'
 import Marquee from './components/Marquee'
 import Problem from './components/Problem'
@@ -21,7 +20,6 @@ import Footer from './components/Footer'
 import WaitlistModal from './components/WaitlistModal'
 
 export default function App() {
-  const [loaded, setLoaded] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const lenisRef = useRef(null)
 
@@ -53,17 +51,6 @@ export default function App() {
     }
   }, [])
 
-  // Loader timer
-  useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 1100)
-    return () => clearTimeout(t)
-  }, [])
-
-  // Lock scroll while loading
-  useEffect(() => {
-    document.body.style.overflow = loaded ? '' : 'hidden'
-  }, [loaded])
-
   // Scroll progress
   const { scrollYProgress } = useScroll()
   const progressX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
@@ -75,7 +62,6 @@ export default function App() {
       if (!target) return
       e.preventDefault()
       setModalOpen(true)
-      // confetti burst
       const rect = target.getBoundingClientRect()
       window.dispatchEvent(new CustomEvent('dm:confetti', {
         detail: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
@@ -87,9 +73,8 @@ export default function App() {
 
   return (
     <>
-      <Loader done={loaded} />
       <Cursor />
-      <BouncingMark />
+      <SectionIndicator />
       <motion.div className="progress" style={{ scaleX: progressX, transformOrigin: '0% 50%' }} />
       <Nav />
       <main>
