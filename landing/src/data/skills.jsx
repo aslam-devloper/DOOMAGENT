@@ -285,7 +285,7 @@ export const stackFlow = [
 
 export const installCmds = [
   { tag: 'STEP 01', text: <><span className="com"># clone the library</span><br />git clone <span className="hi">https://github.com/aslam-devloper/DOOMAGENT.git</span></> },
-  { tag: 'STEP 02', text: <><span className="com"># drop the skills you want into your project</span><br />cp -r DOOMAGENT/skills/<span className="hi">atlas</span> DOOMAGENT/skills/<span className="hi">metis</span> .opencode/skills/</> },
-  { tag: 'STEP 02b', text: <><span className="com"># (or copy them all — 21 skills, ~140kb total)</span><br />cp -r DOOMAGENT/skills/* <span className="hi">.opencode/skills/</span></> },
-  { tag: 'STEP 03', text: <><span className="com"># restart opencode. that's it.</span><br /><span className="hi">// the model now knows when to think like an engineer.</span></> },
+  { tag: 'STEP 02', text: <><span className="com"># drop the skills you want into your agent's skills folder</span><br />cp -r DOOMAGENT/skills/<span className="hi">atlas</span> DOOMAGENT/skills/<span className="hi">metis</span> <span className="hi">~/agents/skills/</span></> },
+  { tag: 'STEP 02b', text: <><span className="com"># (or copy them all — 21 skills, ~140kb total)</span><br />cp -r DOOMAGENT/skills/* <span className="hi">~/agents/skills/</span></> },
+  { tag: 'STEP 03', text: <><span className="com"># restart your agent. that's it.</span><br /><span className="hi">// any AI now thinks like an engineer.</span></> },
 ]

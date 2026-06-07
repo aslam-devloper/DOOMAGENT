@@ -24,6 +24,22 @@ export default function Nav() {
           <a href="#showcase" data-cursor>In action</a>
           <a href="#install" data-cursor>Install</a>
           <a href="#premium" data-cursor>Premium</a>
+          <a
+            href="https://www.instagram.com/aslam.unfiltered"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-ig"
+            data-cursor
+            aria-label="Follow @aslam.unfiltered on Instagram"
+            title="@aslam.unfiltered on Instagram"
+          >
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>@aslam.unfiltered</span>
+          </a>
           <a href="https://github.com/aslam-devloper/DOOMAGENT" className="nav-pill alt" data-cursor>GitHub</a>
           <a href="#premium" className="nav-pill" data-premium-cta data-cursor>Get OMNISCIENCE</a>
         </div>

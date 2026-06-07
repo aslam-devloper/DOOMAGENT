@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 const items = [
   { k: '// the model', v: <>Skills don't make a 7B model into a 70B model. They make a 7B model <em>use what it knows</em> less wastefully. The discipline is the lift, not the data.</> },
-  { k: '// compatibility', v: <>Tested on opencode, Claude Code, Cursor, Cline, Aider, OpenAI Playground, LangChain, Ollama, LM Studio. The format is plain markdown — if your tool reads a system prompt, it works.</> },
+  { k: '// compatibility', v: <>Works on <em>any agent</em> that reads a system prompt. Tested on Claude Code, Cursor, Cline, Aider, opencode, OpenAI Playground, LangChain, Ollama, LM Studio. The format is plain markdown — if your tool reads a system prompt, it works.</> },
   { k: '// ethos', v: <>ETHOS is the only skill that's <em>opt-in</em>. It doesn't activate unless you ask. We didn't build a moral layer into the rest of the library. That's a feature.</> },
   { k: '// the square', v: <>Yes, the corner square is intentional. No, we won't stop. It's bounced <span data-bounces>0</span> times since you opened this page. <em>It has bounced more than you have thought today.</em></> },
   { k: '// who built it', v: <>One person. <em>ASLAM</em>. From a small keyboard. On a small desk. In a small apartment. The library is small because the builder is small, in the most affectionate sense.</> },

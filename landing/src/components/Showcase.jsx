@@ -1,102 +1,109 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
 import { showcases } from '../data/skills.jsx'
+import Reveal from './Reveal'
 
-/**
- * Horizontal scroll on vertical scroll.
- * As the user scrolls vertically through this section, the track slides
- * horizontally. Progress is shown as a cyan bar at the bottom.
- */
 export default function Showcase() {
-  const sectionRef = useRef(null)
+  const ref = useRef(null)
   const trackRef = useRef(null)
+  const [progress, setProgress] = useState(0)
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
+    target: ref,
+    offset: ['start end', 'end start'],
   })
+  // Subtle Y parallax on the section's meta block
+  const headY = useTransform(scrollYProgress, [0, 1], [40, -40])
 
-  // Use a spring for smoother mapping
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    mass: 0.6,
-  })
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+    function onScroll() {
+      const max = el.scrollWidth - el.clientWidth
+      const p = max > 0 ? el.scrollLeft / max : 0
+      setProgress(p)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
 
-  // Section is 4x viewport tall to give scroll-room
-  // We translate from 0% to -X% where X = (trackWidth - viewport) / trackWidth * 100
-  const xPercent = useTransform(smoothProgress, [0, 1], ['0%', '-66%'])
-  const progressBar = useTransform(smoothProgress, (v) => `${Math.min(100, v * 100)}%`)
+  function nudge(dir) {
+    const el = trackRef.current
+    if (!el) return
+    const card = el.querySelector('.show-v2-card')
+    const w = card ? card.getBoundingClientRect().width + 28 : 800
+    el.scrollBy({ left: dir * w, behavior: 'smooth' })
+  }
 
   return (
-    <section
-      id="showcase"
-      ref={sectionRef}
-      style={{ height: '380vh' }} // gives scroll distance
-    >
-      <div className="wrap" style={{ paddingTop: 80 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="eyebrow-sm">// 03 — in action</div>
-          <h2>Same model. <span className="ink">Different brain.</span></h2>
-          <p className="lead">
-            A 7B local model (Llama 3.1 8B, Ollama) answering the same question three times. Each time with a different skill loaded. The shape of the answer changes. The model didn't.
-          </p>
+    <section ref={ref} id="showcase">
+      <div className="wrap">
+        <motion.div style={{ y: headY }}>
+          <Reveal>
+            <div className="eyebrow-sm">// 03 — see it work</div>
+            <h2>Same prompt. <span className="ink">Different model.</span></h2>
+            <p className="lead">
+              The library doesn't change the AI. It changes how the AI uses what it knows. Here's the same question, with and without a skill loaded.
+            </p>
+          </Reveal>
         </motion.div>
       </div>
 
-      <div
-        className="showcase"
-        style={{
-          position: 'sticky',
-          top: 80,
-          paddingTop: 32,
-          paddingBottom: 32,
-        }}
-      >
-        <div className="wrap" style={{ overflow: 'hidden' }}>
-          <motion.div
-            ref={trackRef}
-            className="showcase-track"
-            style={{ x: xPercent }}
-          >
-            {showcases.map((s, i) => (
-              <div className="showcase-card" key={s.name}>
-                <div className="meta">
-                  <div className="glyph">{s.glyph}</div>
-                  <div className="name">{s.name}</div>
-                  <div className="tag">{s.tagline}</div>
-                  <p className="intro">{s.intro}</p>
+      <div className="show-v2">
+        <div className="show-v2-rail" ref={trackRef}>
+          {showcases.map((s, i) => (
+            <motion.div
+              key={s.name}
+              className="show-v2-card"
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.7, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              data-cursor
+            >
+              <div className="meta">
+                <div className="glyph">{s.glyph}</div>
+                <div className="name">{s.name}</div>
+                <div className="tag">{s.tagline}</div>
+                <div className="intro">{s.intro}</div>
+              </div>
+              <div className="panels">
+                <div className="show-v2-panel before">
+                  <span className="tag">BEFORE</span>
+                  <div className="q">{s.q}</div>
+                  <div className="a">{s.before}</div>
                 </div>
-                <div className="panels">
-                  <div className="panel before">
-                    <div className="tag">Without</div>
-                    <div className="q">{s.q}</div>
-                    <div className="a">{s.before}</div>
-                  </div>
-                  <div className="panel after">
-                    <div className="tag">With {s.name}</div>
-                    <div className="q">{s.q}</div>
-                    <div className="a">{s.after}</div>
-                  </div>
+                <div className="show-v2-panel after">
+                  <span className="tag">AFTER · {s.name}</span>
+                  <div className="q">{s.q}</div>
+                  <div className="a">{s.after}</div>
                 </div>
               </div>
-            ))}
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
-
-        <div className="wrap" style={{ marginTop: 24 }}>
-          <div className="showcase-progress">
-            <motion.div className="bar" style={{ width: progressBar }} />
-          </div>
-          <div className="showcase-hint">
-            <span>// scroll to compare 3 skills</span>
-            <span>METIS · ATLAS · PHRONESIS</span>
-          </div>
+        <div className="show-v2-progress">
+          <div className="bar" style={{ width: `${progress * 100}%` }} />
+        </div>
+        <div className="show-v2-hint">
+          <button
+            type="button"
+            onClick={() => nudge(-1)}
+            style={{ background: 'transparent', border: 0, color: 'inherit', font: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', padding: 0, cursor: 'none' }}
+            data-cursor
+          >
+            ← PREV
+          </button>
+          <span>{Math.round(progress * 100 + 1)} / {showcases.length}</span>
+          <button
+            type="button"
+            onClick={() => nudge(1)}
+            style={{ background: 'transparent', border: 0, color: 'inherit', font: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', padding: 0, cursor: 'none' }}
+            data-cursor
+          >
+            NEXT →
+          </button>
         </div>
       </div>
     </section>

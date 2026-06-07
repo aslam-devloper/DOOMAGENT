@@ -44,7 +44,7 @@ export default function Install() {
         <div className="install-steps">
           {[
             { n: '/01', t: 'Pick your skills', d: "Don't install all 21 on day one. Start with the ones that match the work you actually do: METIS for debugging, ATLAS for architecture, TECHNE for code review." },
-            { n: '/02', t: 'Drop into .opencode/skills/', d: 'opencode, Claude Code, Cursor, Cline, Aider — anything that reads a system prompt. The skills auto-load. No config required.' },
+            { n: '/02', t: 'Drop into your agent’s skills folder', d: 'Claude Code, Cursor, Cline, Aider, opencode, LangChain — any agent that reads a system prompt. The skills auto-load. No config required.' },
             { n: '/03', t: 'Watch the model change', d: 'Trigger phrases in each skill\'s frontmatter teach the model when to activate. "Bug" → METIS. "Architect" → ATLAS. "Should I" → PHRONESIS.' },
           ].map((step, i) => (
             <motion.div
