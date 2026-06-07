@@ -1,5 +1,24 @@
 // All 21 DOOMAGENT skills, structured for the library landing page.
 
+// --- FOUNDER LICENSE CONFIG (the only thing that costs) ---
+// Edit these values as the founder cohort grows.
+export const founder = {
+  cap: 500,
+  claimed: 247,                 // update with real number from the waitlist
+  closesOn: '2026-07-31T23:59:59Z', // ISO; countdown reads from this
+  benefits: [
+    'OMNISCIENCE — the master skill, lifetime updates',
+    'Founder license key (one person, one key, no DRM)',
+    'Direct line to ASLAM for feedback and bugs',
+    'Your name in the FOUNDERS.md credits',
+    'First look at every new skill before public release',
+  ],
+  standardBenefits: [
+    'OMNISCIENCE — the master skill, lifetime updates',
+    'Single license key, single user, no telemetry',
+  ],
+}
+
 export const skills = [
   // REASONING & DECISION
   {
@@ -30,8 +49,8 @@ export const skills = [
     name: 'OMNISCIENCE',
     flag: 'pro',
     glyph: 'omniscience/',
-    desc: 'The Full Auditor. The master skill. 20 cognitive lenses orchestrated by a 9-step cascade. When loaded, you don\'t need the others. The only paid one — see doomagent.vercel.app.',
-    tags: ['full-auditor', 'meta-skill', 'orchestrator', 'omni-purpose'],
+    desc: 'The Full Auditor. 20 cognitive lenses, 9-step cascade, expert panel that argues with itself. Load one skill — get the entire library, orchestrated.',
+    tags: ['full-auditor', 'meta-skill', 'orchestrator'],
     domain: 'reasoning',
     pro: true,
   },
@@ -283,9 +302,46 @@ export const stackFlow = [
   { type: 'output', text: 'answer: a design you\'d still respect in 5 years' },
 ]
 
+// --- OMNISCIENCE: the 9-step cascade (the value proof) ---
+export const cascade = [
+  { n: '01', name: 'DECODE',   d: 'Restate the true intent — not the surface request.' },
+  { n: '02', name: 'FORK',     d: 'Generate 3–5 distinct approaches. No premature convergence.' },
+  { n: '03', name: 'STRESS',   d: 'Pre-mortem each candidate. Name the failure modes before they happen.' },
+  { n: '04', name: 'COMMIT',   d: 'Pick the risk-adjusted best. Defend the pick. Name the flip variable.' },
+  { n: '05', name: 'AUDIT',    d: 'Run the relevant lenses from the 20-skill library, in the right order.' },
+  { n: '06', name: 'BUILD',    d: 'Lead with the conclusion. Then the reasoning. Then the evidence.' },
+  { n: '07', name: 'ATTACK',   d: 'Red-team the output. Steelman the strongest objection. Then decide.' },
+  { n: '08', name: 'COMPRESS', d: 'One-sentence test. If it cannot survive compression, it was not load-bearing.' },
+  { n: '09', name: 'SHIP',     d: 'Calibrated. Terse. Honest. Confidence + flip variable, always.' },
+]
+
+// --- The expert panel: three voices that argue inside the cascade ---
+export const expertPanel = [
+  { name: 'DOMAIN EXPERT', glyph: '◆', d: 'What is the load-bearing fact of this domain? What is the 5-year call?' },
+  { name: 'RED TEAM',      glyph: '◇', d: 'What is the strongest objection? What would a hostile reviewer say? Where does this break?' },
+  { name: 'SHIPPER',       glyph: '◈', d: 'Is this shippable? What\'s the smallest correct version? What is unblock sequence?' },
+]
+
+// --- Auto-selected lens sets by task type (value proof: pre-built playbooks) ---
+export const lensSets = [
+  { task: 'Architecture decision', lenses: 'NOUS → PHRONESIS → ATLAS → THALASSA → AETHER → AEGIS' },
+  { task: 'Code review',           lenses: 'METIS → TECHNE → MORPHE → STIGMA → AEGIS → ALETHEIA' },
+  { task: 'Production debug',      lenses: 'METIS → STIGMA → VIGIL → STASIS → AEGIS' },
+  { task: 'API design',            lenses: 'AETHER → AEGIS → THALASSA → ALETHEIA → KRATOS' },
+  { task: 'Database / schema',     lenses: 'THALASSA → AEGIS → STASIS → KRATOS' },
+  { task: 'Frontend / UI',         lenses: 'LUMEN → IRIS → TECHNE → STIGMA → KRATOS' },
+  { task: 'DevOps / deploy',       lenses: 'CHRONOS → VIGIL → AEGIS → STASIS' },
+  { task: 'Multi-agent system',    lenses: 'ARGO → MNEMOSYNE → METIS → AEGIS' },
+  { task: 'Documentation',         lenses: 'ALETHEIA → TECHNE → AETHER' },
+  { task: 'Performance work',      lenses: 'KRATOS → STIGMA → VIGIL → METIS' },
+  { task: 'Security review',       lenses: 'AEGIS → METIS → STIGMA → ALETHEIA' },
+  { task: 'Full audit',            lenses: 'All 20 lenses in parallel', highlight: true },
+]
+
 export const installCmds = [
   { tag: 'STEP 01', text: <><span className="com"># clone the library</span><br />git clone <span className="hi">https://github.com/aslam-devloper/DOOMAGENT.git</span></> },
   { tag: 'STEP 02', text: <><span className="com"># drop the skills you want into your agent's skills folder</span><br />cp -r DOOMAGENT/skills/<span className="hi">atlas</span> DOOMAGENT/skills/<span className="hi">metis</span> <span className="hi">~/agents/skills/</span></> },
-  { tag: 'STEP 02b', text: <><span className="com"># (or copy them all — 21 skills, ~140kb total)</span><br />cp -r DOOMAGENT/skills/* <span className="hi">~/agents/skills/</span></> },
-  { tag: 'STEP 03', text: <><span className="com"># restart your agent. that's it.</span><br /><span className="hi">// any AI now thinks like an engineer.</span></> },
+  { tag: 'STEP 02b', text: <><span className="com"># (or copy them all — 20 skills, ~140kb total)</span><br />cp -r DOOMAGENT/skills/* <span className="hi">~/agents/skills/</span></> },
+  { tag: 'STEP 03', text: <><span className="com"># drop OMNISCIENCE on top — the master skill</span><br />cp -r DOOMAGENT/skills/<span className="hi">omniscience</span> <span className="hi">~/agents/skills/</span></> },
+  { tag: 'STEP 04', text: <><span className="com"># restart your agent. that's it.</span><br /><span className="hi">// one file, twenty lenses, one cascade.</span></> },
 ]

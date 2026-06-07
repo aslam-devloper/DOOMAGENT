@@ -8,3 +8,8 @@ node_modules/
 .idea/
 *.swp
 *.swo
+
+# OMNISCIENCE — the master skill — is commercial-licensed and gated by the
+# founder cohort. It is delivered via https://doomagent.vercel.app, never via
+# the public repo. Keep it local, never push it.
+AGENTDOOM/premium/

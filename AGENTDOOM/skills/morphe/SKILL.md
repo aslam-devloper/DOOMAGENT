@@ -1,14 +1,19 @@
 ---
 name: morphe
-description: Refactoring, code shape, structural improvement, behavior-preserving transformations. Use when user says "refactor", "restructure", "improve structure", "extract method", "this is messy", "clean up the code", or asks for behavior-preserving improvements.
-version: 1.0.0
-author: ASLAM (@aslam.unfiltred)
+description: Refactoring, code shape, structural improvement, behavior-preserving transformations. Use when user says "refactor", "restructure", "improve structure", "extract method", "this is messy", "clean up the code", or asks for behavior-preserving improvements. Behavior is invariant. For adding features, branch first. For multi-domain, defer to OMNISCIENCE.
+version: 3.0.0
+author: ASLAM (@aslam.unfiltered)
 brand: DOOMAGENT
 license: Apache-2.0
 tags: [refactoring, code-shape, behavior-preserving, restructuring]
+changelog:
+  3.0.0: "Added When NOT to Use, Kill Signal, Output Format, Confidence & Flip Variable, Quick Reference. Fixed encoding bugs."
+  2.0.0: "Initial public release."
 ---
 
 # MORPHE
+
+> *MORPHE is the shape lens. One concern: improve structure without changing behavior. Tests gate the work. One transformation at a time.*
 
 ## Philosophy
 
@@ -30,6 +35,26 @@ Three laws:
 - "Behavior-preserving change"
 - "Make this testable"
 
+## When NOT to Use This
+
+- **No tests exist** — write characterization tests first. Refactoring without tests is not refactoring, it's gambling.
+- **Behavior change is wanted** — that's a feature, branch first. Refactor on a separate branch.
+- **Code quality in style only** (idiomatic, naming, format) — use TECHNE for craftsmanship. MORPHE is structural shape (extract method, move responsibility, replace conditional).
+- **Performance refactor** — use KRATOS. MORPHE preserves behavior; KRATOS preserves behavior while making it faster. Different lens.
+- **Architecture-level refactor** (splitting services, changing data flow) — use ATLAS. MORPHE is in-codebase structural improvement.
+- **Multi-domain tasks (refactor + perf + tests + ship)** — load OMNISCIENCE.
+
+## Kill Signal
+
+Stop and restart when:
+- **No tests exist for the code being refactored.** Stop. Write characterization tests first. Refactoring untested code is gambling; the "behavior preservation" cannot be verified.
+- **The "refactor" changes behavior.** That's a feature, not a refactor. Branch. Implement. Test. Merge. Do not mix.
+- **Multiple transformations in one commit.** Each transformation is one mechanical change. If you can't describe the commit in one sentence ("extract method", "rename for intent"), split it.
+- **The code gets longer and not clearer.** Revert. A refactor that doesn't improve readability is a rewrite. Reject.
+- **You're adding features "while you're in there".** Stop. Refactor on its own branch. Features on their own. Mix = merge hell.
+- **Scope drifts from "shape" to "rewrite".** MORPHE is incremental, mechanical, behavior-preserving. "Rewrite this whole module" is not MORPHE; it's TECHNE + a new design.
+- **The smell is named but the fix is not.** "This is messy" is not actionable. Name the smell (long method, feature envy, data clump). Name the fix (extract method, move method, extract class). Then apply.
+
 ## Behavior Rules
 
 1. Tests before refactor. If there are no tests, write characterization tests that capture current behavior. Then refactor.
@@ -37,6 +62,12 @@ Three laws:
 3. Name the smell, name the fix. "Long method" → "Extract method". "Switch statement" → "Replace conditional with polymorphism".
 4. Don't add features during a refactor. Behavior is invariant. If you want to add a feature, branch.
 5. The code should be SHORTER or CLEARER after, not just different. If it's longer and not clearer, revert.
+
+## Mini-protocol
+
+1. Map the current shape. Find the seams.
+2. Extract the change. Make it behavior-preserving.
+3. Run the full test suite. Commit small.
 
 ## Workflow
 
@@ -62,13 +93,33 @@ Three laws:
 | Comments explaining what code does | Rename or extract method |
 | Dead code | Delete it (VCS remembers) |
 
-## Output Standards
+## Output Format
 
-- Show the smell identified
-- Show the fix name
-- Show before/after code
-- Show the test that proves behavior is preserved
-- Note the commit message
+```
+SMELL
+<name from the catalog — long method, feature envy, data clump, ...>
+
+FIX
+<name from the catalog — extract method, move method, extract class, ...>
+
+BEFORE
+<the current code, with the smell visible>
+
+AFTER
+<the refactored code, with the smell gone>
+
+TESTS
+<the characterization tests that lock in behavior — added first if not present>
+
+COMMIT MESSAGE
+<refactor: <fix name> from <module/function name>>
+
+VERIFICATION
+<test suite run — passed / failed>
+
+CONFIDENCE: <X%> — <the behavior assumption that, if wrong, drops this the most>
+FLIP VARIABLE: <if the behavior was actually wrong and the "smell" was load-bearing, the refactor is wrong>
+```
 
 ## Self-Audit
 
@@ -77,41 +128,72 @@ Three laws:
 - [ ] Is the result shorter or clearer, or just different?
 - [ ] Did I commit between transformations?
 - [ ] Did I avoid adding features during the refactor?
+- [ ] Did I state confidence and the flip variable?
+
+## Pairs With
+
+- **techne** — make the new shape idiomatic
+- **stigma** — behavior tests are the safety net
+- **atlas** — structural refactor needs an architectural map
+- **kratos** — performance refactor (different lens, same discipline)
+- **omniscience** — when refactor bleeds into design or ship-readiness
+
+## Quick Reference
+
+| Signal | Action |
+|---|---|
+| "Refactor this" | MORPHE — tests first, one transformation, commit |
+| "This is messy" | MORPHE — name the smell, name the fix, apply |
+| "Make it more idiomatic" | TECHNE |
+| "It's slow, refactor for perf" | KRATOS |
+| "Rewrite this module" | ATLAS (design) → MORPHE (incremental) |
+| "Add tests so I can refactor" | STIGMA first, then MORPHE |
+| "Refactor + add a feature" | Branch, MORPHE one branch, feature another |
 
 ## Examples
 
 **Input:** "This function is 80 lines and does 4 things."
 
 **Output:**
-"Smell: Long method. Fix: Extract method (×3-4).
+```
+SMELL
+Long method (80 lines, 4 responsibilities)
 
-Before:
-```js
+FIX
+Extract method (×4)
+
+BEFORE
 function processOrder(order) {
   // 20 lines: validate order
   // 20 lines: charge payment
   // 20 lines: send confirmation
   // 20 lines: update inventory
 }
-```
 
-After:
-```js
+AFTER
 function processOrder(order) {
   validateOrder(order);
   const payment = chargePayment(order);
   sendConfirmation(order, payment);
   updateInventory(order, payment);
 }
+
+TESTS
+- Characterization tests added first (one per responsibility)
+- All pass before refactor; all pass after
+
+COMMIT MESSAGES
+- refactor: extract validateOrder from processOrder
+- refactor: extract chargePayment from processOrder
+- refactor: extract sendConfirmation from processOrder
+- refactor: extract updateInventory from processOrder
+
+VERIFICATION
+Test suite: passed (4 commits, behavior identical)
+
+CONFIDENCE: 95% — assuming the 4 sections are independent and the existing tests cover the integration.
+FLIP VARIABLE: If validateOrder needs to share state with chargePayment (e.g., a normalized total), the 4-way split is wrong and you need a different boundary.
 ```
-
-The four extracted methods are now individually testable, individually readable, and the high-level function reads like the spec.
-
-Each extract: 1 commit, tests run, behavior unchanged.
-
-Commit messages: `refactor: extract validateOrder from processOrder`, etc.
-
-Confidence: 95%."
 
 ## Anti-Patterns
 
@@ -124,3 +206,4 @@ Confidence: 95%."
 - Refactoring that makes the code longer and not clearer
 - Deleting tests because "they were testing the old way"
 - Refactoring in a hurry (refactoring is a thinking activity)
+- "Refactor" as a vague word for "rewrite"

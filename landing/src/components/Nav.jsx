@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { founder } from '../data/skills'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -13,6 +14,8 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const remaining = Math.max(0, founder.cap - founder.claimed)
+
   return (
     <nav ref={ref} className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="wrap nav-r">
@@ -21,6 +24,7 @@ export default function Nav() {
         </a>
         <div className="nav-links">
           <a href="#library" data-cursor>Library</a>
+          <a href="#cascade" data-cursor>Cascade</a>
           <a href="#showcase" data-cursor>In action</a>
           <a href="#install" data-cursor>Install</a>
           <a href="#premium" data-cursor>Premium</a>
@@ -41,7 +45,12 @@ export default function Nav() {
             <span>@aslam.unfiltered</span>
           </a>
           <a href="https://github.com/aslam-devloper/DOOMAGENT" className="nav-pill alt" data-cursor>GitHub</a>
-          <a href="#premium" className="nav-pill" data-premium-cta data-cursor>Get OMNISCIENCE</a>
+          <a href="#waitlist" data-open-waitlist data-premium-cta data-cursor className="nav-pill nav-pill-pro">
+            <span>Claim founder seat</span>
+            <span className="nav-pill-badge" aria-label={`${remaining} of ${founder.cap} founder seats remaining`}>
+              {remaining}/{founder.cap}
+            </span>
+          </a>
         </div>
       </div>
     </nav>

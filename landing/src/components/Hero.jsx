@@ -5,7 +5,7 @@ import FloatingChips from './FloatingChips'
 import Tilt from './Tilt'
 import Magnetic from './Magnetic'
 import Reveal from './Reveal'
-import { skills } from '../data/skills.jsx'
+import { skills, founder, cascade } from '../data/skills.jsx'
 
 const heroChips = skills
   .filter(s => s.flag === 'free')
@@ -13,11 +13,11 @@ const heroChips = skills
   .map(s => ({ name: s.name, accent: s.flag === 'opt-in' }))
 
 const titleLines = [
-  { text: '21 skills' },
-  { text: 'that make any' },
-  { text: 'AI think', accent: true },
-  { text: 'like an' },
-  { text: 'engineer.' },
+  { text: 'OMNISCIENCE.' },
+  { text: '9 steps.' },
+  { text: '20 lenses.' },
+  { text: '1 answer', accent: true },
+  { text: "you'd ship." },
 ]
 
 const easings = [0.16, 1, 0.3, 1]
@@ -33,6 +33,8 @@ export default function Hero() {
   const terminalY = useTransform(scrollYProgress, [0, 1], [0, 80])
   const terminalOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+  const remaining = Math.max(0, founder.cap - founder.claimed)
+
   return (
     <section className="hero-v2" id="top" ref={ref}>
       <MeshGradient />
@@ -42,7 +44,8 @@ export default function Hero() {
           <div className="hero-v2-left">
             <Reveal as="div" delay={0} duration={0.6}>
               <div className="hero-v2-eyebrow">
-                v1.0 · 21 skills · Apache 2.0 · works on any agent
+                <span className="pulse"></span>
+                FOUNDER COHORT · {founder.claimed} of {founder.cap} seats · closes {new Date(founder.closesOn).toUTCString().slice(0, 16)}
               </div>
             </Reveal>
 
@@ -63,32 +66,36 @@ export default function Hero() {
             </h1>
 
             <Reveal as="p" delay={0.6} y={20} duration={0.7} className="hero-v2-sub">
-              A library of cognitive skills for <b>any AI agent</b> — Claude Code, Cursor, Cline, Aider, opencode, LangChain, anything that reads a system prompt. Drop the folder in. The model learns to debug like <b style={{ color: 'var(--phosphor)' }}>METIS</b>, architect like <b style={{ color: 'var(--phosphor)' }}>ATLAS</b>, trade off like <b style={{ color: 'var(--phosphor)' }}>PHRONESIS</b>, ship like <b style={{ color: 'var(--phosphor)' }}>CHRONOS</b>. One premium tier — <b style={{ color: 'var(--amber)' }}>OMNISCIENCE</b> — the Full Auditor that contains all 20 as lenses.
+              The free library — 20 cognitive skills, Apache 2.0, no DRM, no telemetry —
+              is the <b>proof of craft</b>. <b style={{ color: 'var(--amber)' }}>OMNISCIENCE</b> is the
+              work itself: a 9-step cascade that loads the right lenses, runs an expert panel
+              that argues with itself, and ships an answer an engineer would sign.
+              Drop it into <b>any AI agent</b> — Claude Code, Cursor, Cline, Aider, opencode, LangChain.
             </Reveal>
 
             <Reveal as="div" delay={0.8} y={20} duration={0.6} className="hero-v2-ctas">
               <Magnetic strength={0.25} as="div">
-                <a href="https://github.com/aslam-devloper/DOOMAGENT" className="btn" data-cursor>
-                  Get the library <span className="arrow">→</span>
+                <a href="#waitlist" className="btn amber" data-open-waitlist data-cursor>
+                  Claim founder license <span className="arrow">→</span>
                 </a>
               </Magnetic>
               <Magnetic strength={0.2} as="div">
-                <a href="#library" className="btn ghost" data-cursor>
-                  See all 21 skills
+                <a href="#cascade" className="btn ghost" data-cursor>
+                  See the cascade
                 </a>
               </Magnetic>
               <Magnetic strength={0.25} as="div">
-                <a href="#premium" className="btn amber" data-premium-cta data-cursor>
-                  Upgrade to OMNISCIENCE <span className="arrow">→</span>
+                <a href="https://github.com/aslam-devloper/DOOMAGENT" className="btn" data-cursor>
+                  Get the free library
                 </a>
               </Magnetic>
             </Reveal>
 
             <Reveal as="div" delay={1.0} y={20} duration={0.6} className="hero-v2-meta">
-              <span><span className="pulse"></span><b>21</b> skills</span>
-              <span><b>Apache 2.0</b> license</span>
+              <span><b>{founder.claimed}</b> / {founder.cap} founder seats</span>
+              <span><b>9</b> cascade steps</span>
+              <span><b>20</b> free lenses</span>
               <span><b>0</b> dependencies</span>
-              <span><b>1</b> premium tier</span>
               <span><b>any</b> AI agent</span>
               <a
                 href="https://www.instagram.com/aslam.unfiltered"
@@ -113,22 +120,20 @@ export default function Hero() {
               <div className="hero-terminal">
                 <div className="hero-terminal-bar">
                   <div className="dots"><span></span><span></span><span></span></div>
-                  <span>~/agents/skills/</span>
-                  <span className="ttl">doomagent · preview</span>
+                  <span>~/agents/skills/omniscience/</span>
+                  <span className="ttl">doomagent · OMNISCIENCE</span>
                 </div>
                 <div className="hero-terminal-body">
-                  <span className="l"><span className="com"># load the library — works on any agent</span></span>
-                  <span className="l"><span className="k">$</span> cp -r DOOMAGENT/skills/* <span className="s">~/agents/skills/</span></span>
+                  <span className="l"><span className="com"># load OMNISCIENCE — the master skill</span></span>
+                  <span className="l"><span className="k">$</span> cp -r DOOMAGENT/skills/omniscience <span className="s">~/agents/skills/</span></span>
                   <span className="l">&nbsp;</span>
-                  <span className="l"><span className="com"># pick a skill — or load OMNISCIENCE for all 20</span></span>
-                  <span className="l"><span className="k">→</span> skill: <span className="v">METIS</span>  <span className="com">// deep debugging</span></span>
-                  <span className="l"><span className="k">→</span> skill: <span className="v">ATLAS</span>  <span className="com">// system architecture</span></span>
-                  <span className="l"><span className="k">→</span> skill: <span className="v">AEGIS</span>  <span className="com">// security & threat model</span></span>
-                  <span className="l"><span className="k">→</span> skill: <span className="v">PHRONESIS</span>  <span className="com">// trade-off analysis</span></span>
+                  <span className="l"><span className="com"># it loads the 9-step cascade + all 20 lenses</span></span>
+                  <span className="l"><span className="k">→</span> {cascade[0].n} {cascade[0].name.padEnd(10)}  <span className="com">// {cascade[0].d}</span></span>
+                  <span className="l"><span className="k">→</span> {cascade[1].n} {cascade[1].name.padEnd(10)}  <span className="com">// {cascade[1].d}</span></span>
+                  <span className="l"><span className="k">→</span> {cascade[4].n} {cascade[4].name.padEnd(10)}  <span className="com">// 20-lens audit · expert panel</span></span>
                   <span className="l">&nbsp;</span>
-                  <span className="l"><span className="com"># ask anything</span></span>
-                  <span className="l"><span className="p">user:</span> <span className="s">"My app crashes randomly. Help?"</span></span>
-                  <span className="l"><span className="p">model:</span> <span className="c">"Randomly</span> is not a cause. Two questions before I touch any code…<span className="cursor-blink"></span></span>
+                  <span className="l"><span className="p">user:</span> <span className="s">"Should I split this into microservices?"</span></span>
+                  <span className="l"><span className="p">model:</span> <span className="c">No. Not yet.</span> Three reasons, one flip variable, confidence 80%<span className="cursor-blink"></span></span>
                 </div>
                 <div className="hero-terminal-glow" />
               </div>

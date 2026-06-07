@@ -1,34 +1,39 @@
 # DOOMAGENT
 
-![DOOMAGENT](./assets/logo.svg)
-
 **The mind of a firm. The speed of one.**
 
-20 free cognitive skills for AI agents + 1 master skill (paid). Built by ASLAM, useful not flashy.
+20 free cognitive skills for AI agents. **OMNISCIENCE** — the master skill — is the one that orchestrates all 20. Apache 2.0 for the free library. Built by ASLAM, useful not flashy.
 
-Each skill is a small cognitive operating system — a structured way of thinking that any AI model can load and apply. Drop them into Claude Code, Cursor, Windsurf, OpenAI, or any agent framework. They make the model think more carefully about specific kinds of work.
+```
+$ git clone https://github.com/aslam-devloper/DOOMAGENT.git
+$ cp -r DOOMAGENT/skills/atlas DOOMAGENT/skills/metis ~/agents/skills/
+```
 
-**[→ Live site: doomagent.vercel.app](https://doomagent.vercel.app)** · Apache 2.0 for the free library.
+Each skill is a small cognitive operating system — a structured way of thinking that any AI model can load and apply. Drop them into Claude Code, Cursor, Windsurf, opencode, or any agent framework. They make the model think more carefully about specific kinds of work.
+
+**[→ Live site: doomagent.vercel.app](https://doomagent.vercel.app)** · [Download free library (.zip)](https://github.com/aslam-devloper/DOOMAGENT/archive/refs/heads/main.zip) · Apache 2.0
+
+---
 
 ## 🔥 OMNISCIENCE — The Master Skill
 
 > **20 lenses. One cascade. Zero blind spots.**
 
-OMNISCIENCE is the **only paid skill** in the library — and the only one you need to load. It contains all 20 free skills as named **lenses**, orchestrated by a 9-step reasoning cascade:
+The 20 free skills are **instruments**. OMNISCIENCE is the **conductor** — it contains all 20 as named **lenses**, picks the right ones for the task, runs an expert panel that argues with itself, and ships an answer an engineer would sign.
 
 ```
-1. DECODE  → restate the true intent
-2. FORK    → generate 3-5 distinct approaches
-3. STRESS  → pre-mortem each candidate
-4. COMMIT  → pick the risk-adjusted best
-5. AUDIT   → run the relevant lenses
-6. BUILD   → lead with conclusion
-7. ATTACK  → red team the output
+1. DECODE   → restate the true intent
+2. FORK     → generate 3-5 distinct approaches
+3. STRESS   → pre-mortem each candidate
+4. COMMIT   → pick the risk-adjusted best
+5. AUDIT    → run the relevant lenses
+6. BUILD    → lead with conclusion
+7. ATTACK   → red-team the output
 8. COMPRESS → one-sentence test
-9. SHIP    → calibrated, terse, honest
+9. SHIP     → calibrated, terse, honest
 ```
 
-Inside the **AUDIT** step, OMNISCIENCE picks the right lenses from the 20-skill library:
+Inside **AUDIT**, OMNISCIENCE picks the right lenses from the 20-skill library:
 
 | Lens | What it audits |
 |---|---|
@@ -63,13 +68,21 @@ CONFIDENCE: X% — [one-line reason]
 FLIP VARIABLE: [what would change this answer]   ← for trade-off questions
 ```
 
-### Why OMNISCIENCE is paid when the other 20 are free
+### Founder cohort — the only way to get OMNISCIENCE
 
-The other 20 are **instruments**. OMNISCIENCE is the **conductor** — it knows when to use which instrument, in what order, and when two instruments contradict. That orchestration is the only thing in the library that wouldn't exist without the discipline of selling it.
+OMNISCIENCE ships in a **founder cohort**, capped at 500 seats. When the cap is met, OMNISCIENCE stays closed until the next round.
 
-**$9.99, one-time, no subscription, no DRM.**
+**What you get:**
 
-→ **[Get OMNISCIENCE at doomagent.vercel.app](https://doomagent.vercel.app)**
+- OMNISCIENCE — the master skill, lifetime updates
+- Founder license key (one person, one key, no DRM)
+- Direct line to ASLAM for feedback and bugs
+- Your name in the `FOUNDERS.md` credits
+- First look at every new skill before public release
+
+→ **[Claim a founder license at doomagent.vercel.app](https://doomagent.vercel.app)**
+
+The 20 free skills stay free forever. The founder cohort is what keeps the work alive.
 
 ### Auto-selected lens sets for common tasks
 
@@ -91,6 +104,8 @@ The other 20 are **instruments**. OMNISCIENCE is the **conductor** — it knows 
 ---
 
 ## The 20 Free Skills
+
+The library is **free forever, Apache 2.0**. Use it commercially. Modify it. Ship it in your own product. Just keep the credit.
 
 | Skill | What it does |
 |---|---|
@@ -145,8 +160,10 @@ Each skill has:
 - A **self-audit** (questions the model asks before responding)
 - **Examples** (concrete before/after)
 - **Anti-patterns** (what the skill refuses to do)
+- A **kill signal** (when to refuse the prompt)
+- A **confidence + flip variable** (always named, never hidden)
 
-The combination is more useful than the sum of the parts. **OMNISCIENCE** is the conductor — it contains all 20 of these as lenses, picks the right ones for the task, and reports the verdicts inline. Load OMNISCIENCE, get all 20. Load one specific skill, get that depth only.
+The combination is more useful than the sum of the parts. **OMNISCIENCE** is the conductor — it contains all 20 of these as lenses, picks the right ones for the work, and reports the verdicts inline. Load OMNISCIENCE, get all 20. Load one specific skill, get that depth only.
 
 ## What they're not
 
@@ -158,14 +175,14 @@ They're not opinion-free. ATLAS will tell you to use Postgres. AEGIS will refuse
 
 ## License
 
-Apache 2.0 for the 20 free skills. OMNISCIENCE (paid) has its own license — see [doomagent.vercel.app](https://doomagent.vercel.app). Use the free ones commercially. Modify them. Ship them in your own product. Just keep the credit.
+Apache 2.0 for the 20 free skills. OMNISCIENCE is **Commercial** — license issued on https://doomagent.vercel.app. Use the free ones commercially. Modify them. Ship them in your own product. Just keep the credit.
 
 ## Credits
 
 Built by **ASLAM**.
 
 - GitHub: [@aslam-devloper](https://github.com/aslam-devloper)
-- Instagram: [@aslam.unfiltred](https://instagram.com/aslam.unfiltred)
+- Instagram: [@aslam.unfiltered](https://instagram.com/aslam.unfiltered)
 - Landing: [doomagent.vercel.app](https://doomagent.vercel.app)
 
 If this is useful, [drop a donation](https://razorpay.me/@mohammadibraheem). It funds more skills.

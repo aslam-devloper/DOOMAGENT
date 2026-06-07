@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import { motion, useScroll, useSpring } from 'framer-motion'
 
@@ -14,13 +14,13 @@ import Install from './components/Install'
 import Stack from './components/Stack'
 import Stats from './components/Stats'
 import Premium from './components/Premium'
+import Cascade from './components/Cascade'
 import Fineprint from './components/Fineprint'
 import Buy from './components/Buy'
 import Footer from './components/Footer'
 import WaitlistModal from './components/WaitlistModal'
 
 export default function App() {
-  const [modalOpen, setModalOpen] = useState(false)
   const lenisRef = useRef(null)
 
   // Smooth scroll via Lenis
@@ -55,13 +55,14 @@ export default function App() {
   const { scrollYProgress } = useScroll()
   const progressX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
 
-  // Open waitlist modal from any premium CTA
+  // Open founder-cohort modal from any premium / open-waitlist / premium-cta trigger.
+  // Also fires a small confetti burst at the trigger position.
   useEffect(() => {
     function onClick(e) {
-      const target = e.target.closest('[data-premium-cta]')
+      const target = e.target.closest('[data-premium-cta], [data-open-waitlist]')
       if (!target) return
       e.preventDefault()
-      setModalOpen(true)
+      window.dispatchEvent(new CustomEvent('open-waitlist'))
       const rect = target.getBoundingClientRect()
       window.dispatchEvent(new CustomEvent('dm:confetti', {
         detail: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
@@ -88,11 +89,12 @@ export default function App() {
         <Stack />
         <Stats />
         <Premium />
+        <Cascade />
         <Fineprint />
         <Buy />
       </main>
       <Footer />
-      <WaitlistModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <WaitlistModal />
     </>
   )
 }

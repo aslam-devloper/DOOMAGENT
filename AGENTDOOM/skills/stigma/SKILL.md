@@ -1,14 +1,19 @@
 ---
 name: stigma
-description: Testing, QA, edge case hunting, test design, coverage strategy. Use when user says "test this", "write tests", "QA", "edge case", "coverage", "this is breaking", or any request to verify behavior, hunt bugs, or design test suites.
-version: 1.0.0
-author: ASLAM (@aslam.unfiltred)
+description: Testing, QA, edge case hunting, test design, coverage strategy. Use when user says "test this", "write tests", "QA", "edge case", "coverage", "this is breaking", or any request to verify behavior, hunt bugs, or design test suites. Test the failure, not the feature. For the bug itself, defer to METIS. For multi-domain, defer to OMNISCIENCE.
+version: 3.0.0
+author: ASLAM (@aslam.unfiltered)
 brand: DOOMAGENT
 license: Apache-2.0
 tags: [testing, qa, edge-cases, coverage, verification]
+changelog:
+  3.0.0: "Added When NOT to Use, Kill Signal, Output Format, Confidence & Flip Variable, Quick Reference. Fixed encoding bugs."
+  2.0.0: "Initial public release."
 ---
 
 # STIGMA
+
+> *STIGMA is the test lens. One concern: cover the failure modes, not just the happy path. The test name is the spec. The unhandled case is the bug.*
 
 ## Philosophy
 
@@ -30,6 +35,27 @@ Three laws:
 - "Unit / integration / e2e"
 - "Hunt the bug"
 
+## When NOT to Use This
+
+- **Debugging a known bug** — use METIS. STIGMA writes the test that catches the regression; METIS finds the cause.
+- **Test framework choice** — that's PHRONESIS (Jest vs Vitest vs Pytest, etc.). STIGMA is the strategy, not the tool.
+- **Performance testing** — use KRATOS (load tests, latency tests) + VIGIL (production metrics).
+- **Visual regression / snapshot tests** — adjacent but specialized. Default: include in STIGMA if the team's tooling supports it; otherwise separate.
+- **Code review of testability** — use TECHNE or MORPHE. STIGMA is the test design, not the code shape.
+- **Multi-domain tasks (tests + perf + CI + ship)** — load OMNISCIENCE.
+
+## Kill Signal
+
+Stop and restart when:
+- **The test is testing the implementation, not the contract.** Refactor the test. Test the public API. If you test internal calls, refactoring breaks tests for no reason.
+- **The test name is `test1`, `test2`, `test_foo`.** Stop. The test name is the spec. "rejects negative numbers" is documentation. `test1` is not.
+- **Tests share state or depend on order.** Stop. Each test must be independent. Shared state = flaky tests = tests that get ignored.
+- **Happy path is covered but failure modes are not.** Stop. The happy path works once. The failure mode is the test. Add the edges.
+- **The test doesn't assert.** A test without an assertion is not a test. It's a smoke check. Add the assertion.
+- **Coverage is being chased as a goal.** 100% coverage with bad tests is worse than 80% coverage with good tests. Cover the high-risk paths.
+- **Tests are flaky (timing-dependent, order-dependent, network-dependent).** Stop. Flaky tests get disabled, then deleted. Fix the flake.
+- **Scope drifts to "set up the whole test infrastructure".** Out of scope for one STIGMA task. Pick the surface. Test that. Move on.
+
 ## Behavior Rules
 
 1. Cover the failure modes, not just the happy path. Empty, null, negative, zero, max, concurrent, malformed, unauthorized.
@@ -37,6 +63,12 @@ Three laws:
 3. Each test is independent. No shared state, no order dependence, no "the previous test set this up."
 4. The test name is the spec. `it('rejects negative numbers', ...)` is documentation. `it('test 1', ...)` is not.
 5. Coverage is a signal, not a goal. 100% coverage with bad tests is worse than 80% coverage with good tests.
+
+## Mini-protocol
+
+1. List the behaviors that must hold. Pick the edges.
+2. Write a failing test before the fix.
+3. Run the full suite. Did anything else move?
 
 ## Workflow
 
@@ -60,13 +92,34 @@ Three laws:
 - **Time**: timezone, DST, leap year, leap second
 - **Unicode**: emoji, RTL, combining characters
 
-## Output Standards
+## Output Format
 
-- Show the test cases (happy + edge)
-- Show the test structure (Arrange/Act/Assert)
-- Show the test name (states the contract)
-- Note the category of edge cases covered
-- Note the test runner / framework
+```
+SPEC
+- <what this code does — inputs, outputs, side effects, errors>
+
+TEST CASES
+- Happy: <the one path that should "just work">
+- Edge: <empty, null, zero, max, negative, concurrent, malformed, unauthorized, time, unicode>
+- Failure: <what the code does when it can't succeed>
+
+TEST CODE
+<the actual test — Arrange/Act/Assert, named, independent>
+
+EDGE CATEGORIES COVERED
+- <category 1>
+- <category 2>
+- <category 3>
+
+NOT COVERED (intentionally)
+- <category> — <reason: out of scope, low risk, integration test covers it>
+
+TEST RUNNER
+<framework + how to run + expected duration>
+
+CONFIDENCE: <X%> — <the test assumption that, if wrong, drops this the most>
+FLIP VARIABLE: <if the spec changes, these tests are the first to rot>
+```
 
 ## Self-Audit
 
@@ -76,14 +129,53 @@ Three laws:
 - [ ] Is the test fast (<100ms for unit)?
 - [ ] Is the test deterministic (no flake)?
 - [ ] Did I cover the edge case categories?
+- [ ] Did I state confidence and the flip variable?
+
+## Pairs With
+
+- **metis** — the bug gives you the test
+- **morphe** — the test suite is the refactor safety net
+- **vigil** — synthetic tests in prod, not only in CI
+- **techne** — testable code shape
+- **omniscience** — when test strategy bleeds into ship-readiness
+
+## Quick Reference
+
+| Signal | Action |
+|---|---|
+| "Write tests for this" | STIGMA — spec, edges, Arrange/Act/Assert |
+| "This is breaking in prod" | METIS (root cause) + STIGMA (regression test) |
+| "Set up testing" | STIGMA (strategy) + PHRONESIS (framework choice) |
+| "Refactor this code" | STIGMA first (tests as safety net) → MORPHE |
+| "100% coverage goal" | STIGMA — coverage is a signal, not a goal |
+| "Test is flaky" | STIGMA — fix the flake, or delete the test |
+| "Multi-layer test strategy" | OMNISCIENCE |
 
 ## Examples
 
 **Input:** "Write tests for this function: `addTax(price, rate)`."
 
 **Output:**
-"Test cases (happy + edge):
+```
+SPEC
+- Input: price (number, ≥ 0), rate (number, 0 ≤ rate ≤ 1)
+- Output: number = price * (1 + rate)
+- Errors: throws on negative price, negative rate, rate > 1, non-numeric inputs
 
+TEST CASES
+- Happy: 100 + 10% = 110
+- Happy: 100 + 0% = 100 (tax-free)
+- Edge: 0 + 10% = 0
+- Edge: 100 + 100% = 200 (doubles)
+- Edge: 0.01 + 10% (floating point precision)
+- Edge: MAX_SAFE_INTEGER + 10% (overflow check)
+- Failure: negative price → throws
+- Failure: negative rate → throws
+- Failure: rate > 1 → throws
+- Failure: non-numeric price → throws
+- Failure: null price → throws
+
+TEST CODE
 ```js
 describe('addTax', () => {
   // Happy path
@@ -120,12 +212,10 @@ describe('addTax', () => {
     expect(() => addTax(-100, 0.10)).toThrow('price must be non-negative');
   });
 
-  // Edge: negative rate (should reject)
   it('throws on negative rate', () => {
     expect(() => addTax(100, -0.10)).toThrow('rate must be non-negative');
   });
 
-  // Edge: rate > 1 (should reject)
   it('throws on rate > 1', () => {
     expect(() => addTax(100, 1.5)).toThrow('rate must be between 0 and 1');
   });
@@ -147,11 +237,16 @@ describe('addTax', () => {
 });
 ```
 
-12 tests. Happy path + 10 edge cases. Each test name states the contract. Each test is independent.
+EDGE CATEGORIES COVERED
+zero, max, floating point, negative (rejection), rate bounds, non-numeric, null, large
 
-Edge categories covered: zero, max, floating point, negative (rejection), rate bounds, non-numeric, null, large.
+NOT COVERED
+- Concurrent calls — pure function, no shared state, N/A
+- Unicode — numeric input, N/A
 
-Confidence: 90%."
+CONFIDENCE: 90% — spec is well-defined and edges are covered.
+FLIP VARIABLE: If the spec changes (e.g., rate is now in basis points), every assertion needs updating.
+```
 
 ## Anti-Patterns
 
@@ -165,3 +260,4 @@ Confidence: 90%."
 - Mocking the thing you're testing
 - Test that doesn't assert
 - "Just add a test" without specifying what behavior is being verified
+- Coverage goals that override test quality

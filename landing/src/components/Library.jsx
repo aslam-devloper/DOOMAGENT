@@ -48,6 +48,40 @@ export default function Library() {
         </Reveal>
 
         <Reveal as="div" delay={0.1}>
+          <div className="lib-v2-download">
+            <div className="ld-left">
+              <div className="ld-glyph">↓</div>
+              <div className="ld-text">
+                <div className="ld-h">Download the free library</div>
+                <div className="ld-meta">20 skills · ~140kb · Apache 2.0 · ZIP · works on any agent</div>
+              </div>
+            </div>
+            <div className="ld-right">
+              <a
+                className="btn-v2 green ld-btn"
+                href="https://github.com/aslam-devloper/DOOMAGENT/archive/refs/heads/main.zip"
+                download
+                data-cursor
+                aria-label="Download the free DOOMAGENT library as a ZIP file"
+              >
+                <span className="ld-btn-glyph">↓</span>
+                <span>Download .zip</span>
+                <span className="ld-btn-size">~140kb</span>
+              </a>
+              <a
+                className="btn-v2 ghost"
+                href="https://github.com/aslam-devloper/DOOMAGENT"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor
+              >
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal as="div" delay={0.1}>
           <div className="lib-v2-filters" role="tablist" aria-label="Filter by domain">
             {FILTERS.map(f => (
               <button

@@ -1,3 +1,5 @@
+import { founder } from '../data/skills'
+
 export default function Footer() {
   return (
     <footer className="foot-v2">
@@ -28,12 +30,18 @@ export default function Footer() {
             </a>{' '}
             · 20 cognitive lenses
           </div>
+          <div className="foot-v2-funder">
+            <span className="dot-funder" aria-hidden /> Founder cohort ·{' '}
+            {founder.claimed}/{founder.cap} seats ·{' '}
+            <a href="#waitlist" data-open-waitlist data-cursor>
+              closes {new Date(founder.closesOn).toUTCString().slice(0, 16)}
+            </a>
+          </div>
         </div>
         <div className="foot-v2-links">
           <a href="https://github.com/aslam-devloper/DOOMAGENT" data-cursor>GitHub</a>
           <a href="https://razorpay.me/@mohammadibraheem" data-cursor>Donate</a>
-          <a href="#premium" data-cursor>Premium</a>
-          <a href="#buy" data-cursor>Get it</a>
+          <a href="#waitlist" data-open-waitlist data-cursor className="foot-cta">Claim founder seat</a>
         </div>
       </div>
     </footer>
